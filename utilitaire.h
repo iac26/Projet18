@@ -18,7 +18,7 @@ double util_distance(S2D a, S2D b);
 
 double util_angle(S2D a, S2D b);
 
-void util_range_angle(double * p_angle);
+void util_range_angle(double *p_angle);
 
 bool util_point_dehors(S2D a, double max);
 
