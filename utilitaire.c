@@ -75,5 +75,5 @@ S2D util_deplacement(S2D p, double alpha, double dist){
 }
 
 bool util_ecart_angle(S2D a, double alpha, S2D b, double * p_ecart_angle){
-	
+	//commentaire
 }
