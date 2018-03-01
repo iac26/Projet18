@@ -105,6 +105,33 @@ bool util_alignement(S2D a, double alpha, S2D b) {
 }
 
 bool util_inner_triangle(double la, double lb, double lc, double lb_new, double *p_la_new) {
+	double a, b, c, delta, s1, s2;
+	a = 1.0;
+	b = -lc*(la*la + lc*lc - lb*lb)/(la*lc);
+	c = lc*lc - lb_new*lb_new;
+	delta = b*b - 4.0*a*c;
+	if(delta < 0) {
+		return false;
+	}
+	if(delta > 0) {
+		s1 = (-b + sqrt(delta))/2.0*a;
+		s2 = (-b - sqrt(delta))/2.0*a;
+		if((s1 > lb)&&(s1 < lc)) {
+			if(p_la_new)
+				*p_la_new = s1;
+		} else if((s2 > lb)&&(s2 < lc)) {
+			if(p_la_new)
+				*p_la_new = s2;
+		} else {
+			return false;
+		}
+		return true;
+	}
+	if(delta == 0) {
+		if(p_la_new)
+			*p_la_new = -b/2.0*a;
+		return true;
+	}
 	
 }
 
