@@ -1,0 +1,2 @@
+#define EPSIL_ZERO	1e-2
+#define EPDIL_ALIGNEMENT 0.0625
