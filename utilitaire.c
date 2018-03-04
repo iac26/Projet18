@@ -24,10 +24,11 @@ double util_angle(S2D a, S2D b) {
 
 void util_range_angle(double *p_angle) {
 	if(p_angle) {
-		if(*p_angle <= 0) {
-			*p_angle = fmod(*p_angle, 2.0*M_PI);
-		} else {
-			*p_angle = fmod(*p_angle, -2.0*M_PI);
+		*p_angle = fmod(*p_angle, 2*M_PI);
+		if (*p_angle > M_PI) {
+			*p_angle -= 2.0*M_PI;
+		} else if (*p_angle <= -M_PI) {
+			*p_angle += 2.0*M_PI;
 		}
 	}
 }
