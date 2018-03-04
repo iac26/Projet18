@@ -204,20 +204,15 @@ void correct(void) {
 	double do_x = o_x - dummy.centre.x;
 	double do_y = o_y - dummy.centre.y;
 	double L = sqrt(do_x*do_x + do_y*do_y);
-	printf("cfmove %lf %lf\n", dx, dy);
 	player.centre.x += dx;
 	player.centre.y += dy;
 	double delta_d = sqrt(dx*dx + dy*dy);
 	if(util_collision_cercle(player, dummy, &dist)) {
-		if(!util_inner_triangle(delta_d, dist, L, player.rayon+dummy.rayon, &n_delta_d)) {
-			printf("someissue\n");
-		}
+		util_inner_triangle(delta_d, dist, L, player.rayon+dummy.rayon, &n_delta_d);
 		dx *= (n_delta_d/delta_d);
 		dy *= (n_delta_d/delta_d);
 		player.centre.x = o_x + dx;
 		player.centre.y = o_y + dy;
-		printf("delta_d: %lf n_delta_d: %lf\n", delta_d, n_delta_d);
-		printf("corrected %lf %lf\n", dx, dy);
 	}
 	
 }

@@ -108,7 +108,6 @@ bool util_inner_triangle(double la, double lb, double lc, double lb_new, double 
 	b = -2.0*lc*(la*la + lc*lc - lb*lb)/(2.0*la*lc);
 	c = lc*lc - lb_new*lb_new;
 	delta = b*b - 4.0*a*c;
-	printf("delta: %lf\n", delta);
 	if(delta < 0) {
 		return false;
 	}
