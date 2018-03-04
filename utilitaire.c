@@ -81,7 +81,7 @@ bool util_ecart_angle(S2D a, double alpha, S2D b, double *p_ecart_angle) {
 	angle = util_angle(a, b);
 	if(dist > EPSIL_ZERO) {
 		if(p_ecart_angle) {
-			*p_ecart_angle = alpha - angle;
+			*p_ecart_angle = angle - alpha;
 			util_range_angle(p_ecart_angle);
 		}
 		return true;
