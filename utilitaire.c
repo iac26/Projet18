@@ -105,9 +105,10 @@ bool util_alignement(S2D a, double alpha, S2D b) {
 bool util_inner_triangle(double la, double lb, double lc, double lb_new, double *p_la_new) {
 	double a, b, c, delta, s1, s2;
 	a = 1.0;
-	b = -lc*(la*la + lc*lc - lb*lb)/(la*lc);
+	b = -2.0*lc*(la*la + lc*lc - lb*lb)/(2.0*la*lc);
 	c = lc*lc - lb_new*lb_new;
 	delta = b*b - 4.0*a*c;
+	printf("delta: %lf\n", delta);
 	if(delta < 0) {
 		return false;
 	}
@@ -117,11 +118,9 @@ bool util_inner_triangle(double la, double lb, double lc, double lb_new, double 
 		if((s1 > lb)&&(s1 < lc)) {
 			if(p_la_new)
 				*p_la_new = s1;
-		} else if((s2 > lb)&&(s2 < lc)) {
+		} else {
 			if(p_la_new)
 				*p_la_new = s2;
-		} else {
-			return false;
 		}
 		return true;
 	}
