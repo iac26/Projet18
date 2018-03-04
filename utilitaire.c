@@ -6,18 +6,18 @@
 #include <stdbool.h>
 
 double util_distance(S2D a, S2D b) {
-	double dx, dy, d;
+	double dx, dy, dist;
 	dx = a.x - b.x;
 	dy = a.y - b.y;
-	d = sqrt(dx*dx + dy*dy);
-	return d;
+	dist = sqrt(dx*dx + dy*dy);
+	return dist;
 }
 
 double util_angle(S2D a, S2D b) {
 	double dx, dy, angle;
 	dx = a.x - b.x;
 	dy = a.y - b.y;
-	angle = atan(dy/dx);
+	angle = atan2(dy, dx);
 	util_range_angle(&angle);
 	return angle;
 }
@@ -25,10 +25,10 @@ double util_angle(S2D a, S2D b) {
 void util_range_angle(double *p_angle) {
 	if(p_angle) {
 		if(*p_angle > M_PI) {
-			*p_angle -= 2*M_PI;
+			*p_angle -= 2.0*M_PI;
 		}
-		else if(*p_angle <= -M_PI) {
-			*p_angle += 2*M_PI;
+		else if(*p_angle < -M_PI) {
+			*p_angle += 2.0*M_PI;
 		}
 	}
 }
@@ -59,10 +59,8 @@ bool util_point_dans_cercle(S2D a, C2D c) {
 }
 
 bool util_collision_cercle(C2D a, C2D b, double *p_dist) {
-	double dx, dy, dist;
-	dx = a.centre.x - b.centre.x;
-	dy = a.centre.y - b.centre.y;
-	dist = sqrt(dx*dx - dy*dy);
+	double dist;
+	dist = util_distance(a.centre, b.centre);
 	if(p_dist) {
 		*p_dist = dist;
 	}
@@ -86,7 +84,7 @@ bool util_ecart_angle(S2D a, double alpha, S2D b, double *p_ecart_angle) {
 	d = dx*dx + dy*dy;
 	if(d > EPSIL_ZERO*EPSIL_ZERO) {
 		if(p_ecart_angle) {
-			*p_ecart_angle = alpha - atan(dy/dx);
+			*p_ecart_angle = alpha - atan2(dy, dx);
 			util_range_angle(p_ecart_angle);
 		}
 		return true;
@@ -97,7 +95,7 @@ bool util_ecart_angle(S2D a, double alpha, S2D b, double *p_ecart_angle) {
 bool util_alignement(S2D a, double alpha, S2D b) {
 	double angle;
 	if(util_ecart_angle(a, alpha, b, &angle)) {
-		if(abs(angle) < EPSIL_ALIGNEMENT) {
+		if(fabs(angle) < EPSIL_ALIGNEMENT) {
 			return true;
 		}
 	}
