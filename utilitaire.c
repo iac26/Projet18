@@ -17,7 +17,7 @@ double util_angle(S2D a, S2D b) {
 	double dx, dy, angle;
 	dx = a.x - b.x;
 	dy = a.y - b.y;
-	angle = atan2(dy, dx);
+	angle = atan2(dx, dy);
 	util_range_angle(&angle);
 	return angle;
 }
