@@ -17,7 +17,7 @@ double util_angle(S2D a, S2D b) {
 	double dx, dy, angle;
 	dx = a.x - b.x;
 	dy = a.y - b.y;
-	angle = atan2(dx, dy);
+	angle = atan2(dy, dx);
 	util_range_angle(&angle);
 	return angle;
 }
@@ -27,7 +27,7 @@ void util_range_angle(double *p_angle) {
 		if(*p_angle > M_PI) {
 			*p_angle -= 2.0*M_PI;
 		}
-		else if(*p_angle <= -M_PI) {
+		if(*p_angle <= -M_PI) {
 			*p_angle += 2.0*M_PI;
 		}
 	}
@@ -48,10 +48,8 @@ bool util_alpha_dehors(double alpha) {
 }
 
 bool util_point_dans_cercle(S2D a, C2D c) {
-	double dx, dy, dist;
-	dx = a.x - c.centre.x;
-	dy = a.y - c.centre.y;
-	dist = sqrt(dx*dx + dy*dy);
+	double dist;
+	dist = util_distance(a, c.centre);
 	if(dist < (c.rayon - EPSIL_ZERO)) {
 		return true;
 	}
@@ -71,20 +69,19 @@ bool util_collision_cercle(C2D a, C2D b, double *p_dist) {
 }
 
 S2D util_deplacement(S2D p, double alpha, double dist) {
-	S2D temp;
-	temp.x = p.x + dist*cos(alpha);
-	temp.y = p.y + dist*sin(alpha);
-	return temp;
+	S2D new_p;
+	new_p.x = p.x + dist*cos(alpha);
+	new_p.y = p.y + dist*sin(alpha);
+	return new_p;
 }
 
 bool util_ecart_angle(S2D a, double alpha, S2D b, double *p_ecart_angle) {
-	double dx, dy, dist2;
-	dx = a.x - b.x;
-	dy = a.y - b.y;
-	dist2 = dx*dx + dy*dy;
-	if(dist2 > EPSIL_ZERO*EPSIL_ZERO) {
+	double angle, dist;
+	dist = util_distance(a, b);
+	angle = util_angle(a, b);
+	if(dist > EPSIL_ZERO) {
 		if(p_ecart_angle) {
-			*p_ecart_angle = atan2(dy, dx) - alpha;
+			*p_ecart_angle = alpha - angle;
 			util_range_angle(p_ecart_angle);
 		}
 		return true;
