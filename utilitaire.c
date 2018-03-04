@@ -15,8 +15,8 @@ double util_distance(S2D a, S2D b) {
 
 double util_angle(S2D a, S2D b) {
 	double dx, dy, angle;
-	dx = a.x - b.x;
-	dy = a.y - b.y;
+	dx = b.x - a.x;
+	dy = b.y - a.y;
 	angle = atan2(dy, dx);
 	util_range_angle(&angle);
 	return angle;
