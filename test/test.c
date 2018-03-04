@@ -18,15 +18,22 @@ C2D player, dummy;
 
 void affichage(void);
 void keyboard(char key);
+void mouse(int button, int state, int x, int y);
 void keyboard_2(char key);
 void calculs(void);
+void correct(void);
 void init(C2D* o, double x, double y, double r);
 void draw_text(char *string, double x, double y);
 void draw_circle(C2D o);
+double convert_y(int y);
+double convert_x(int x);
 void quit(void); 
 
 double vx;
 double vy;
+
+double dx;
+double dy;
 
 double dist;
 double angle;
@@ -57,6 +64,7 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(affichage);
 	glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keyboard_2);
+	glutMouseFunc(mouse);
 	glutTimerFunc(FLEN, calculs, 0);
 	glutMainLoop();
 }
@@ -128,6 +136,26 @@ void keyboard_2(char key) {
 		}
 }
 
+void mouse(int button, int state, int x, int y) {
+	if((button == GLUT_LEFT_BUTTON)&&(state == GLUT_DOWN)) {
+		dx = convert_x(x) - player.centre.x;
+		dy = convert_y(y) - player.centre.y;
+		vx = 0.0;
+		vy = 0.0;
+		correct();
+	}
+}
+
+double convert_x(int x) {
+	return ((double) x / 400)*4.0;
+}
+
+double convert_y(int y) {
+	y -= 400; 
+	y *= -1;
+	return ((double) y / 400)*4.0;
+}
+
 void calculs(void) {
 	if(up) {
 		vy += P_SPEED;
@@ -166,6 +194,28 @@ void calculs(void) {
 	
 	glutPostRedisplay();
 	glutTimerFunc(FLEN, calculs, 0);
+}
+
+void correct(void) {
+	double dist;
+	double n_delta_d;
+	double o_x = player.centre.x;
+	double o_y = player.centre.y;
+	double L = sqrt(o_x*o_x + o_y*o_y);
+	printf("cfmove %lf %lf\n", dx, dy);
+	player.centre.x += dx;
+	player.centre.y += dy;
+	double delta_d = sqrt(dx*dx + dy*dy);
+	if(util_collision_cercle(player, dummy, &dist)) {
+		util_inner_triangle(delta_d, dist, L, player.rayon+dummy.rayon, &n_delta_d);
+		dx *= (n_delta_d/delta_d);
+		dy *= (n_delta_d/delta_d);
+		player.centre.x = o_x + dx;
+		player.centre.y = o_y + dy;
+		printf("delta_d: %lf n_delta_d: %lf\n", delta_d, n_delta_d);
+		printf("corrected %lf %lf\n", dx, dy);
+	}
+	
 }
 
 void draw_circle(C2D o) {
