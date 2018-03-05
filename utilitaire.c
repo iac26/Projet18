@@ -101,7 +101,7 @@ bool util_alignement(S2D a, double alpha, S2D b) {
 
 bool util_inner_triangle(double la, double lb, double lc, double lb_new, double *p_la_new) {
 	double a, b, c, delta, s1, s2;
-	if(	(la > EPSIL_ZERO)&&(lb > EPSIL_ZERO)&&(lc > EPSIL_ZERO)&&
+	if(	(la > EPSIL_ZERO)&&(lb >= 0)&&(lc > EPSIL_ZERO)&&
 		(lb_new >= lb)&&(lb_new <= lc)) {
 		a = 1.0;
 		b = -2.0*lc*(la*la + lc*lc - lb*lb)/(2.0*la*lc);
