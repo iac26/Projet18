@@ -23,7 +23,7 @@ double util_distance(S2D a, S2D b) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Distance:\n");
+	fprintf(f, "\nDistance:\n");
 	char str[100];
 	printVec(str, a, 1);
 	fputs(str, f);
@@ -42,7 +42,7 @@ double util_angle(S2D a, S2D b) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Angle:\n");
+	fprintf(f, "\nAngle:\n");
 	char str[100];
 	printVec(str, a, 1);
 	fputs(str, f);
@@ -63,7 +63,7 @@ void util_range_angle(double *p_angle) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Range angle %lf\n", *p_angle);
+	fprintf(f, "\nRange angle %lf\n", *p_angle);
 	if(p_angle) {
 		*p_angle = fmod(*p_angle, 2*M_PI);
 		if (*p_angle > M_PI) {
@@ -81,7 +81,7 @@ bool util_point_dehors(S2D a, double max) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Point dehors (max=%lf):\n", max);
+	fprintf(f, "\n\nPoint dehors (max=%lf):\n", max);
 	char str[100];
 	printVec(str, a, 1);
 	fputs(str, f);
@@ -98,7 +98,7 @@ bool util_alpha_dehors(double alpha) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Angle dehors: %lf", alpha);
+	fprintf(f, "\n\nAngle dehors: %lf \n", alpha);
 	if(fabs(alpha) > M_PI) {
 		return true;
 	}
@@ -112,7 +112,7 @@ bool util_point_dans_cercle(S2D a, C2D c) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Point dans cercle:\n");
+	fprintf(f, "\n\nPoint dans cercle:\n");
 	char str[100];
 	printVec(str, a, 1);
 	fputs(str, f);
@@ -133,7 +133,7 @@ bool util_collision_cercle(C2D a, C2D b, double *p_dist) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Collision cercle:\n");
+	fprintf(f, "\n\nCollision cercle:\n");
 	char str[100];
 	printCirc(str, a, 1);
 	fputs(str, f);
@@ -157,7 +157,7 @@ S2D util_deplacement(S2D p, double alpha, double dist) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Deplacement (angle=%lf, dist=%lf)\n", alpha, dist);
+	fprintf(f, "\n\nDeplacement (angle=%lf, dist=%lf)\n", alpha, dist);
 	char str[100];
 	printVec(str, p, 1);
 	fputs(str, f);
@@ -174,7 +174,7 @@ bool util_ecart_angle(S2D a, double alpha, S2D b, double *p_ecart_angle) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Ecart angle (alpha=%lf)\n", alpha);
+	fprintf(f, "\nEcart angle (alpha=%lf)\n", alpha);
 	char str[100];
 	printVec(str, a, 1);
 	fputs(str, f);
@@ -200,7 +200,7 @@ bool util_alignement(S2D a, double alpha, S2D b) {
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Alignement (alpha=%lf)\n", alpha);
+	fprintf(f, "\n\nAlignement (alpha=%lf)\n", alpha);
 	char str[100];
 	printVec(str, a, 1);
 	fputs(str, f);
@@ -222,7 +222,7 @@ bool util_inner_triangle(double la, double lb, double lc, double lb_new, double 
 	} else {
 		f = fopen("data.txt", "a");
 	}
-	fprintf(f, "Inner triangle: la=%lf, lb=%lf, lc=%lf, lb_new=%lf\n", la, lb, lc, lb_new);
+	fprintf(f, "\n\nInner triangle: la=%lf, lb=%lf, lc=%lf, lb_new=%lf\n", la, lb, lc, lb_new);
 	double a, b, c, delta, s1, s2;
 	if(	(la > EPSIL_ZERO)&&(lb >= 0)&&(lc > EPSIL_ZERO)&&
 		(lb_new >= lb)&&(lb_new <= lc)) {
