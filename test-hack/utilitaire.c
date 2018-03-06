@@ -28,6 +28,8 @@ double util_distance(S2D a, S2D b) {
 	printVec(str, a, 1);
 	fputs(str, f);
 	printVec(str, b, 2);
+	fputs(str, f);
+	fclose(f);
 	double dx, dy, dist;
 	dx = a.x - b.x;
 	dy = a.y - b.y;
@@ -48,6 +50,7 @@ double util_angle(S2D a, S2D b) {
 	fputs(str, f);
 	printVec(str, b, 2);
 	fputs(str, f);
+	fclose(f);
 	double dx, dy, angle;
 	dx = b.x - a.x;
 	dy = b.y - a.y;
@@ -64,6 +67,7 @@ void util_range_angle(double *p_angle) {
 		f = fopen("data.txt", "a");
 	}
 	fprintf(f, "\nRange angle %lf\n", *p_angle);
+	fclose(f);
 	if(p_angle) {
 		*p_angle = fmod(*p_angle, 2*M_PI);
 		if (*p_angle > M_PI) {
@@ -85,6 +89,7 @@ bool util_point_dehors(S2D a, double max) {
 	char str[100];
 	printVec(str, a, 1);
 	fputs(str, f);
+	fclose(f);
 	if((fabs(a.x) > max)||(fabs(a.y) > max)) {
 		return true;
 	}
@@ -99,6 +104,7 @@ bool util_alpha_dehors(double alpha) {
 		f = fopen("data.txt", "a");
 	}
 	fprintf(f, "\n\nAngle dehors: %lf \n", alpha);
+	fclose(f);
 	if(fabs(alpha) > M_PI) {
 		return true;
 	}
@@ -118,6 +124,7 @@ bool util_point_dans_cercle(S2D a, C2D c) {
 	fputs(str, f);
 	printCirc(str, c, 1);
 	fputs(str, f);
+	fclose(f);
 	double dist;
 	dist = util_distance(a, c.centre);
 	if(dist < (c.rayon - EPSIL_ZERO)) {
@@ -139,6 +146,7 @@ bool util_collision_cercle(C2D a, C2D b, double *p_dist) {
 	fputs(str, f);
 	printCirc(str, b, 2);
 	fputs(str, f);
+	fclose(f);
 	double dist;
 	dist = util_distance(a.centre, b.centre);
 	if(p_dist) {
@@ -161,6 +169,7 @@ S2D util_deplacement(S2D p, double alpha, double dist) {
 	char str[100];
 	printVec(str, p, 1);
 	fputs(str, f);
+	fclose(f);
 	S2D new_p;
 	new_p.x = p.x + dist*cos(alpha);
 	new_p.y = p.y + dist*sin(alpha);
@@ -180,6 +189,7 @@ bool util_ecart_angle(S2D a, double alpha, S2D b, double *p_ecart_angle) {
 	fputs(str, f);
 	printVec(str, b, 2);
 	fputs(str, f);
+	fclose(f);
 	double angle, dist;
 	dist = util_distance(a, b);
 	angle = util_angle(a, b);
@@ -206,6 +216,7 @@ bool util_alignement(S2D a, double alpha, S2D b) {
 	fputs(str, f);
 	printVec(str, b, 2);
 	fputs(str, f);
+	fclose(f);
 	double angle;
 	if(util_ecart_angle(a, alpha, b, &angle)) {
 		if(fabs(angle) < EPSIL_ALIGNEMENT) {
@@ -223,6 +234,7 @@ bool util_inner_triangle(double la, double lb, double lc, double lb_new, double 
 		f = fopen("data.txt", "a");
 	}
 	fprintf(f, "\n\nInner triangle: la=%lf, lb=%lf, lc=%lf, lb_new=%lf\n", la, lb, lc, lb_new);
+	fclose(f);
 	double a, b, c, delta, s1, s2;
 	if(	(la > EPSIL_ZERO)&&(lb >= 0)&&(lc > EPSIL_ZERO)&&
 		(lb_new >= lb)&&(lb_new <= lc)) {
