@@ -1,0 +1,19 @@
+# invalid file - invalid particule value
+
+# number of robots
+3	
+	 # robot 1
+	 0  0 0			
+	 # robot 2
+	 1  1 0	
+	 # robot 3
+	-1 -1 0			
+FIN_LISTE
+
+# number of particules
+2		
+    # particule 1		
+	1 2   -2  2	
+	# particule 2
+	1 4.5  2 -2		
+FIN_LISTE

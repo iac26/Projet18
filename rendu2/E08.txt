@@ -1,0 +1,13 @@
+#  correct file with multiple entities per line
+
+# number of robots
+3		
+	 # robot 1 to 3
+	 0  0 0		 1  1 0		-1 -1 0			
+FIN_LISTE
+
+# number of particules
+2		
+    # particule 1 to 2	
+	1 2 -2  2   	1 2  2 -2		
+FIN_LISTE

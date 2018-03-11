@@ -1,4 +1,8 @@
+RECOVERED DATA 
 
+
+
+TEST UTIL POINT DEHORS
 
 Point dehors (max=1.000000):
 Vector 1 : x=0.000000, y=0.000000
@@ -32,6 +36,9 @@ Point dehors (max=20.000000):
 Vector 1 : x=200.000000, y=200.000000
 
 
+TEST UTIL ANGLE DEHORS
+
+
 Angle dehors: 0.785398 
 
 
@@ -53,104 +60,57 @@ Angle dehors: -3.138451
 Angle dehors: -6.283185 
 
 
+TEST UTIL COLLISION CERCLE
+
 Collision cercle:
 Circle 1 : x=0.000000, y=0.000000, r=1.000000
 Circle 2 : x=0.000000, y=0.000000, r=2.000000
-
-Distance:
-Vector 1 : x=0.000000, y=0.000000
-Vector 2 : x=0.000000, y=0.000000
-
 
 Collision cercle:
 Circle 1 : x=-1.000000, y=0.000000, r=2.000000
 Circle 2 : x=1.000000, y=0.000000, r=2.000000
 
-Distance:
-Vector 1 : x=-1.000000, y=0.000000
-Vector 2 : x=1.000000, y=0.000000
-
-
 Collision cercle:
 Circle 1 : x=-1.000000, y=0.000000, r=1.000000
 Circle 2 : x=1.000000, y=0.000000, r=1.000000
-
-Distance:
-Vector 1 : x=-1.000000, y=0.000000
-Vector 2 : x=1.000000, y=0.000000
-
 
 Collision cercle:
 Circle 1 : x=-10.000000, y=-10.000000, r=3.000000
 Circle 2 : x=15.000000, y=0.000000, r=4.000000
 
-Distance:
-Vector 1 : x=-10.000000, y=-10.000000
-Vector 2 : x=15.000000, y=0.000000
-
-
 Collision cercle:
 Circle 1 : x=-1.000000, y=-1.000000, r=1.414214
 Circle 2 : x=1.000000, y=1.000000, r=1.414214
-
-Distance:
-Vector 1 : x=-1.000000, y=-1.000000
-Vector 2 : x=1.000000, y=1.000000
-
 
 Collision cercle:
 Circle 1 : x=0.000000, y=0.000000, r=2.000000
 Circle 2 : x=1.000000, y=1.000000, r=1.000000
 
-Distance:
-Vector 1 : x=0.000000, y=0.000000
-Vector 2 : x=1.000000, y=1.000000
 
+TEST UTIL POINT DANS CERCLE
 
 Point dans cercle:
 Vector 1 : x=0.000000, y=0.000000
 Circle 1 : x=0.000000, y=0.000000, r=0.100000
 
-Distance:
-Vector 1 : x=0.000000, y=0.000000
-Vector 2 : x=0.000000, y=0.000000
-
-
 Point dans cercle:
 Vector 1 : x=-2.000000, y=-2.000000
 Circle 1 : x=1.000000, y=1.000000, r=4.500000
-
-Distance:
-Vector 1 : x=-2.000000, y=-2.000000
-Vector 2 : x=1.000000, y=1.000000
-
 
 Point dans cercle:
 Vector 1 : x=-2.400000, y=4.600000
 Circle 1 : x=51.200000, y=0.300000, r=31.900000
 
-Distance:
-Vector 1 : x=-2.400000, y=4.600000
-Vector 2 : x=51.200000, y=0.300000
-
-
 Point dans cercle:
 Vector 1 : x=-2.000000, y=-2.000000
 Circle 1 : x=1.000000, y=1.000000, r=4.242641
-
-Distance:
-Vector 1 : x=-2.000000, y=-2.000000
-Vector 2 : x=1.000000, y=1.000000
-
 
 Point dans cercle:
 Vector 1 : x=-2.000000, y=-2.000000
 Circle 1 : x=1.000000, y=1.000000, r=4.262641
 
-Distance:
-Vector 1 : x=-2.000000, y=-2.000000
-Vector 2 : x=1.000000, y=1.000000
 
+TEST UTIL DEPLACEMENT
 
 Deplacement (angle=3.200000, dist=0.000000)
 Vector 1 : x=15.450000, y=34.650000
@@ -168,88 +128,25 @@ Deplacement (angle=-0.785398, dist=3.700000)
 Vector 1 : x=2.400000, y=23.100000
 
 
+TEST UTIL ALIGNEMENT
+
 Alignement (alpha=-1.570796)
 Vector 1 : x=13.400000, y=65.200000
 Vector 2 : x=14.540000, y=21.900000
-
-Ecart angle (alpha=-1.570796)
-Vector 1 : x=13.400000, y=65.200000
-Vector 2 : x=14.540000, y=21.900000
-
-Distance:
-Vector 1 : x=13.400000, y=65.200000
-Vector 2 : x=14.540000, y=21.900000
-
-Angle:
-Vector 1 : x=13.400000, y=65.200000
-Vector 2 : x=14.540000, y=21.900000
-
-Range angle -1.544474
-
-Range angle 0.026322
-
 
 Alignement (alpha=-0.986783)
 Vector 1 : x=23.500000, y=45.400000
 Vector 2 : x=35.000000, y=28.000000
 
-Ecart angle (alpha=-0.986783)
-Vector 1 : x=23.500000, y=45.400000
-Vector 2 : x=35.000000, y=28.000000
-
-Distance:
-Vector 1 : x=23.500000, y=45.400000
-Vector 2 : x=35.000000, y=28.000000
-
-Angle:
-Vector 1 : x=23.500000, y=45.400000
-Vector 2 : x=35.000000, y=28.000000
-
-Range angle -0.986783
-
-Range angle -0.000000
-
-
 Alignement (alpha=0.785398)
 Vector 1 : x=13.400000, y=65.200000
 Vector 2 : x=14.540000, y=21.900000
-
-Ecart angle (alpha=0.785398)
-Vector 1 : x=13.400000, y=65.200000
-Vector 2 : x=14.540000, y=21.900000
-
-Distance:
-Vector 1 : x=13.400000, y=65.200000
-Vector 2 : x=14.540000, y=21.900000
-
-Angle:
-Vector 1 : x=13.400000, y=65.200000
-Vector 2 : x=14.540000, y=21.900000
-
-Range angle -1.544474
-
-Range angle -2.329873
-
 
 Alignement (alpha=1.570796)
 Vector 1 : x=14.540000, y=21.900000
 Vector 2 : x=13.400000, y=65.200000
 
-Ecart angle (alpha=1.570796)
-Vector 1 : x=14.540000, y=21.900000
-Vector 2 : x=13.400000, y=65.200000
-
-Distance:
-Vector 1 : x=14.540000, y=21.900000
-Vector 2 : x=13.400000, y=65.200000
-
-Angle:
-Vector 1 : x=14.540000, y=21.900000
-Vector 2 : x=13.400000, y=65.200000
-
-Range angle 1.597118
-
-Range angle 0.026322
+TEST UTIL DISTANCE
 
 Distance:
 Vector 1 : x=0.000000, y=0.000000
@@ -271,103 +168,53 @@ Distance:
 Vector 1 : x=1.414214, y=0.000000
 Vector 2 : x=0.000000, y=-1.414214
 
+
+TEST UTIL ECART ANGLE
+
 Ecart angle (alpha=2.000000)
 Vector 1 : x=1.000000, y=2.000000
 Vector 2 : x=1.000000, y=2.000000
-
-Distance:
-Vector 1 : x=1.000000, y=2.000000
-Vector 2 : x=1.000000, y=2.000000
-
-Angle:
-Vector 1 : x=1.000000, y=2.000000
-Vector 2 : x=1.000000, y=2.000000
-
-Range angle 0.000000
 
 Ecart angle (alpha=1.570796)
 Vector 1 : x=0.000000, y=0.000000
 Vector 2 : x=0.000000, y=-6.000000
 
-Distance:
-Vector 1 : x=0.000000, y=0.000000
-Vector 2 : x=0.000000, y=-6.000000
-
-Angle:
-Vector 1 : x=0.000000, y=0.000000
-Vector 2 : x=0.000000, y=-6.000000
-
-Range angle -1.570796
-
-Range angle -3.141593
-
 Ecart angle (alpha=-0.785398)
 Vector 1 : x=3.500000, y=2.500000
 Vector 2 : x=4.500000, y=3.500000
-
-Distance:
-Vector 1 : x=3.500000, y=2.500000
-Vector 2 : x=4.500000, y=3.500000
-
-Angle:
-Vector 1 : x=3.500000, y=2.500000
-Vector 2 : x=4.500000, y=3.500000
-
-Range angle 0.785398
-
-Range angle 1.570796
 
 Ecart angle (alpha=3.000000)
 Vector 1 : x=0.000000, y=0.000000
 Vector 2 : x=-10.000000, y=-1.000000
 
-Distance:
-Vector 1 : x=0.000000, y=0.000000
-Vector 2 : x=-10.000000, y=-1.000000
-
-Angle:
-Vector 1 : x=0.000000, y=0.000000
-Vector 2 : x=-10.000000, y=-1.000000
-
-Range angle -3.041924
-
-Range angle -6.041924
+TEST UTIL ANGLE
 
 Angle:
 Vector 1 : x=0.000000, y=0.000000
 Vector 2 : x=1.000000, y=0.000000
 
-Range angle 0.000000
-
 Angle:
 Vector 1 : x=1.000000, y=0.000000
 Vector 2 : x=2.000000, y=1.000000
-
-Range angle 0.785398
 
 Angle:
 Vector 1 : x=0.000000, y=0.000000
 Vector 2 : x=0.000000, y=18.000000
 
-Range angle 1.570796
-
 Angle:
 Vector 1 : x=0.000000, y=0.000000
 Vector 2 : x=-5.000000, y=0.000000
-
-Range angle 3.141593
 
 Angle:
 Vector 1 : x=0.000000, y=0.000000
 Vector 2 : x=0.000000, y=-50.000000
 
-Range angle -1.570796
-
 Angle:
 Vector 1 : x=3.000000, y=6.000000
 Vector 2 : x=9.000000, y=12.000000
 
-Range angle 0.785398
+
+UTIL RANGE ANGLE
 
 Range angle 0.785398
 
@@ -379,6 +226,8 @@ Range angle 3.141593
 
 Range angle -3.141593
 
+
+TEST INNER ANGLE
 
 Inner triangle: la=4.000000, lb=3.000000, lc=5.000000, lb_new=3.605551
 

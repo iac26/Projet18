@@ -1,0 +1,19 @@
+# invalid file - robot angle is not within [-pi, pi] rd
+
+# number of robots
+3	
+	 # robot 1
+	 0  0 0			
+	 # robot 2
+	 1  1 -4
+	 # robot 3
+	-1 -1 0			
+FIN_LISTE
+
+# number of particules
+2		
+    # particule 1		
+	1 2 -2  2	
+	# particule 2
+	1 2  2 -2		
+FIN_LISTE

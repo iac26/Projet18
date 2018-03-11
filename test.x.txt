@@ -2420,9 +2420,9 @@
                            .text:00400ff6 8b 05 64 52 20 00                mov    0x205264(%rip),%eax        # 0x00606260 <_ZN12_GLOBAL__N_16pointsE>
                            .text:00400ffc 83 c0 01                         add    $0x1,%eax
                            .text:00400fff 89 05 5b 52 20 00                mov    %eax,0x20525b(%rip)        # 0x00606260 <_ZN12_GLOBAL__N_16pointsE>
-                           .text:00401005 f2 0f 10 25 bb 34 00 00          movsd  0x34bb(%rip),%xmm4        # 0x004044c8
+                           .text:00401005 f2 0f 10 25 bb 34 00 00          movsd  0x34bb(%rip),%xmm4        # 0x004044c8 (2.0)
                            .text:0040100d f2 0f 11 65 80                   movsd  %xmm4,-0x80(%rbp)
-                           .text:00401012 f2 0f 10 2d ae 34 00 00          movsd  0x34ae(%rip),%xmm5        # 0x004044c8
+                           .text:00401012 f2 0f 10 2d ae 34 00 00          movsd  0x34ae(%rip),%xmm5        # 0x004044c8 (2.0)
                            .text:0040101a f2 0f 11 6d 88                   movsd  %xmm5,-0x78(%rbp)
                            .text:0040101f f2 0f 10 05 a9 34 00 00          movsd  0x34a9(%rip),%xmm0        # 0x004044d0
                            .text:00401027 48 8b 45 80                      mov    -0x80(%rbp),%rax
@@ -5901,7 +5901,7 @@
                          .rodata:004044b5 00                               0x00 
                          .rodata:004044b6 00                               0x00 
                          .rodata:004044b7 00                               0x00 
-                         .rodata:004044b8 00                               0x00 
+                         .rodata:004044b8 00                               0x00 ; (double 1.0) 
                          .rodata:004044b9 00                               0x00 
                          .rodata:004044ba 00                               0x00 
                          .rodata:004044bb 00                               0x00 
@@ -5909,7 +5909,7 @@
                          .rodata:004044bd 00                               0x00 
                          .rodata:004044be f0                               0xf0 
                          .rodata:004044bf 3f                               0x3f '?'
-                         .rodata:004044c0 00                               0x00 
+                         .rodata:004044c0 00                               0x00 ; (0.0) 
                          .rodata:004044c1 00                               0x00 
                          .rodata:004044c2 00                               0x00 
                          .rodata:004044c3 00                               0x00 
@@ -5917,7 +5917,7 @@
                          .rodata:004044c5 00                               0x00 
                          .rodata:004044c6 00                               0x00 
                          .rodata:004044c7 00                               0x00 
-                         .rodata:004044c8 00                               0x00 
+                         .rodata:004044c8 00                               0x00 ; (2.0) 
                          .rodata:004044c9 00                               0x00 
                          .rodata:004044ca 00                               0x00 
                          .rodata:004044cb 00                               0x00 
@@ -5925,7 +5925,7 @@
                          .rodata:004044cd 00                               0x00 
                          .rodata:004044ce 00                               0x00 
                          .rodata:004044cf 40                               0x40 '@'
-                         .rodata:004044d0 00                               0x00 
+                         .rodata:004044d0 00                               0x00 ; (20.0)
                          .rodata:004044d1 00                               0x00 
                          .rodata:004044d2 00                               0x00 
                          .rodata:004044d3 00                               0x00 
@@ -5933,7 +5933,7 @@
                          .rodata:004044d5 00                               0x00 
                          .rodata:004044d6 34                               0x34 '4'
                          .rodata:004044d7 40                               0x40 '@'
-                         .rodata:004044d8 00                               0x00 
+                         .rodata:004044d8 00                               0x00 ; (-20.0)
                          .rodata:004044d9 00                               0x00 
                          .rodata:004044da 00                               0x00 
                          .rodata:004044db 00                               0x00 
@@ -5941,7 +5941,7 @@
                          .rodata:004044dd 00                               0x00 
                          .rodata:004044de 34                               0x34 '4'
                          .rodata:004044df c0                               0xc0 
-                         .rodata:004044e0 8d                               0x8d 
+                         .rodata:004044e0 8d                               0x8d ; (-20.0019999) ?chelou
                          .rodata:004044e1 97                               0x97 
                          .rodata:004044e2 6e                               0x6e 'n'
                          .rodata:004044e3 12                               0x12 
@@ -6581,7 +6581,7 @@
                          .rodata:0040475d 00                               0x00 
                          .rodata:0040475e 00                               0x00 
                          .rodata:0040475f 00                               0x00 
-                         .rodata:00404760 ff                               0xff 
+                         .rodata:00404760 ff                               0xff ; (-1 (int))
                          .rodata:00404761 ff                               0xff 
                          .rodata:00404762 ff                               0xff 
                          .rodata:00404763 ff                               0xff 
@@ -6589,7 +6589,7 @@
                          .rodata:00404765 ff                               0xff 
                          .rodata:00404766 ff                               0xff 
                          .rodata:00404767 7f                               0x7f 
-                         .rodata:00404768 00                               0x00 
+                         .rodata:00404768 00                               0x00 ; (0)
                          .rodata:00404769 00                               0x00 
                          .rodata:0040476a 00                               0x00 
                          .rodata:0040476b 00                               0x00 
