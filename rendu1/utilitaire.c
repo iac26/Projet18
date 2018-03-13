@@ -22,7 +22,7 @@ double util_angle(S2D a, S2D b) {
 	return angle;
 }
 
-void util_range_angle(double *p_angle) {
+void util_range_angle(double * p_angle) {
 	if(p_angle) {
 		*p_angle = fmod(*p_angle, 2*M_PI);
 		if (*p_angle > M_PI) {
@@ -56,7 +56,7 @@ bool util_point_dans_cercle(S2D a, C2D c) {
 	return false;
 }
 
-bool util_collision_cercle(C2D a, C2D b, double *p_dist) {
+bool util_collision_cercle(C2D a, C2D b, double * p_dist) {
 	double dist;
 	dist = util_distance(a.centre, b.centre);
 	if(p_dist) {
@@ -75,7 +75,7 @@ S2D util_deplacement(S2D p, double alpha, double dist) {
 	return new_p;
 }
 
-bool util_ecart_angle(S2D a, double alpha, S2D b, double *p_ecart_angle) {
+bool util_ecart_angle(S2D a, double alpha, S2D b, double * p_ecart_angle) {
 	double angle, dist;
 	dist = util_distance(a, b);
 	angle = util_angle(a, b);
@@ -99,7 +99,7 @@ bool util_alignement(S2D a, double alpha, S2D b) {
 	return false;
 }
 
-bool util_inner_triangle(double la, double lb, double lc, double lb_new, double *p_la_new) {
+bool util_inner_triangle(double la, double lb, double lc, double lb_new, double * p_la_new) {
 	double a, b, c, delta, s1, s2;
 	if(	(la > EPSIL_ZERO)&&(lb >= 0)&&(lc > EPSIL_ZERO)&&
 		(lb_new >= lb)&&(lb_new <= lc)) {

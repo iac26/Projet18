@@ -59,7 +59,7 @@ S2D 	util_deplacement(S2D p, double alpha, double dist);
 // DE PLUS, dans le cas VRAI on utilise p_ecart_angle (qui doit être défini) 
 // pour récupérer l'écart angulaire entre le bipoint ab et un vecteur d'angle alpha. 
 // La valeur de l'écart angulaire doit être dans l'intervalle [-pi, pi].
-bool 	util_ecart_angle(S2D a, double alpha, S2D b, double *p_ecart_angle);
+bool 	util_ecart_angle(S2D a, double alpha, S2D b, double * p_ecart_angle);
 
 // renvoie VRAI si un vecteur d'angle alpha est aligné avec le vecteur ab. POur
 // déterminer cela on obtient l'écart angulaire avec la fonction util_ecart_angulaire

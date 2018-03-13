@@ -17,25 +17,24 @@
  * the same for the particles!
  * */
 
-#define MAX_LN_SIZE 100
 enum{CHECKING, ERASING};
-enum{NB_ROBOT, ROBOT, END_ROBOT, NB_PARTICLE, END_PARTICLE, PARTICLE, END};
+enum{NB_ROBOT, READ_ROBOT, END_ROBOT, NB_PARTICLE, END_PARTICLE, READ_PARTICLE, END};
 
 int main (int argc, char ** argv) {
 	//read_file
 	if(argc > 1)
-	read_file(argv[1]);	
+		read_file(argv[1]);	
 	//process data
 }
 
-static int read_file(char * filename) {
+int read_file(char * filename) {
 	FILE * file = fopen(filename, "r");
-	char line[MAX_LN_SIZE];
+	char line[MAX_LINE];
 	unsigned short reader_state = NB_ROBOT;
 	unsigned int line_count = 0;
 	int nb_robot, nb_particle, robot_count = 0, particle_count = 0;
 	if (file) {
-		while(fgets(line, MAX_LN_SIZE, file) != NULL) {
+		while(fgets(line, MAX_LINE, file) != NULL) {
 			line_count++;
 			if((line[0]=='\n')||(line[0]=='\r')||(line[0]=='#'))
 				continue;
@@ -43,9 +42,9 @@ static int read_file(char * filename) {
 			switch (reader_state) {
 				case NB_ROBOT:
 					if(sscanf(line, "%d", &nb_robot) == 1)
-						reader_state = ROBOT;
+						reader_state = READ_ROBOT;
 					break;
-				case ROBOT:
+				case READ_ROBOT:
 					if(detect_fin_liste(line)) {
 						error_fin_liste_robots(line_count);
 						return 0;
@@ -64,9 +63,9 @@ static int read_file(char * filename) {
 					break;
 				case NB_PARTICLE:
 					if(sscanf(line, "%d", &nb_particle) == 1)
-						reader_state = PARTICLE;
+						reader_state = READ_PARTICLE;
 					break;
-				case PARTICLE:
+				case READ_PARTICLE:
 					if(detect_fin_liste(line)) {
 						error_fin_liste_particules(line_count);
 						return 0;
@@ -161,7 +160,7 @@ static void read_particle(char * line, int * p_particle_count, int nb_particle, 
 
 static void remove_comments(char * line) {
 	unsigned short comment_state = CHECKING;
-	for(int i = 0; i < MAX_LN_SIZE; i++) {
+	for(int i = 0; i < MAX_LINE; i++) {
 		if(line[i] == '#') {
 			comment_state = ERASING;
 		}
@@ -182,7 +181,7 @@ static int detect_fin_liste(char * line) {
 }
 
 static int detect_anything(char * line) {
-	for(int i = 0; i < MAX_LN_SIZE; i++) {
+	for(int i = 0; i < MAX_LINE; i++) {
 		if((line[i] > 32)&&(line[i] <= 127)) {
 			return 1;
 		}
