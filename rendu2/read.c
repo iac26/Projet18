@@ -33,27 +33,23 @@ static int read_file(char * filename) {
 	char line[MAX_LN_SIZE];
 	unsigned short reader_state = NB_ROBOT;
 	unsigned int line_count = 0;
-	int nb_robot;
-	int nb_particle;
-	int robot_count = 0;
-	int particle_count = 0;
+	int nb_robot, nb_particle, robot_count = 0, particle_count = 0;
 	if (file) {
 		while(fgets(line, MAX_LN_SIZE, file) != NULL) {
 			line_count++;
-			if((line[0]=='\n')||(line[0]=='\r')||(line[0]=='#')) {
+			if((line[0]=='\n')||(line[0]=='\r')||(line[0]=='#'))
 				continue;
-			}
 			remove_comments(line);
 			switch (reader_state) {
 				case NB_ROBOT:
-					if(sscanf(line, "%d", &nb_robot) == 1) {
-						printf("nbrobot %d\n", nb_robot);
+					if(sscanf(line, "%d", &nb_robot) == 1)
 						reader_state = ROBOT;
-					}
 					break;
 				case ROBOT:
-					if(detect_fin_liste(line))
+					if(detect_fin_liste(line)) {
 						error_fin_liste_robots(line_count);
+						return 0;
+					}
 					read_robot(line, &robot_count);
 					if(robot_count == nb_robot)
 						reader_state = END_ROBOT;
@@ -63,17 +59,18 @@ static int read_file(char * filename) {
 						reader_state = NB_PARTICLE;
 					} else if(detect_anything(line)) {
 						error_missing_fin_liste_robots(line_count);
+						return 0;
 					}
 					break;
 				case NB_PARTICLE:
-					if(sscanf(line, "%d", &nb_particle) == 1) {
-						printf("nbpart %d\n", nb_particle);
+					if(sscanf(line, "%d", &nb_particle) == 1)
 						reader_state = PARTICLE;
-					}
 					break;
 				case PARTICLE:
-					if(detect_fin_liste(line))
-							error_fin_liste_particules(line_count);
+					if(detect_fin_liste(line)) {
+						error_fin_liste_particules(line_count);
+						return 0;
+					}
 					read_particle(line, &particle_count, nb_particle, line_count);
 					if(particle_count == nb_particle)
 						reader_state = END_PARTICLE;
@@ -83,15 +80,16 @@ static int read_file(char * filename) {
 						reader_state = END;
 					} else if(detect_anything(line)) {
 						error_missing_fin_liste_particules(line_count);
+						return 0;
 					}
 					break;
 				case END:
 					break;
 			}
 		}
-		printf("ended\n");
 	} else {
 		error_file_missing(filename);
+		return 0;
 	}
 	return 1;
 }
@@ -117,7 +115,7 @@ static void read_robot(char * line, int * p_robot_count) {
 			align++;
 		}
 		if(align == 3) {
-			printf("robot %g %g %g\n", robot_x, robot_y, robot_a);
+			//printf("robot %g %g %g\n", robot_x, robot_y, robot_a);
 			if(p_robot_count)
 				*p_robot_count += 1;
 		}
@@ -152,7 +150,7 @@ static void read_particle(char * line, int * p_particle_count, int nb_particle, 
 			align++;
 		}
 		if(align == 4) {
-			printf("particle %g %g %g %g\n", particle_e, particle_r, particle_x, particle_y);
+			//printf("particle %g %g %g %g\n", particle_e, particle_r, particle_x, particle_y);
 			if(p_particle_count)
 				*p_particle_count += 1;
 			align = 0;
@@ -185,9 +183,7 @@ static int detect_fin_liste(char * line) {
 
 static int detect_anything(char * line) {
 	for(int i = 0; i < MAX_LN_SIZE; i++) {
-		printf("%c/", line[i]);
 		if((line[i] > 32)&&(line[i] <= 127)) {
-			printf("%d %c %d\n", line[i], line[i], i);
 			return 1;
 		}
 	}
