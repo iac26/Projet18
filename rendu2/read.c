@@ -7,16 +7,24 @@
 #include "constantes.h"
 
 //read beta LOL
+//new reading pattern
+/* first delete the comments.
+ * the first number appearing is nb_robot
+ * the following nb_robot*3 numbers are robots
+ * if a fin liste is encountered before --> error
+ * after reading the nb_robot*3 values there should be a FIN_LISTE
+ * if there isnt -> error
+ * the same for the particles!
+ * */
 
 #define MAX_LN_SIZE 100
 enum{CHECKING, ERASING};
-enum{NB_ROBOT, ROBOT, NB_PARTICLE, PARTICLE, END};
+enum{NB_ROBOT, ROBOT, END_ROBOT, NB_PARTICLE, END_PARTICLE, PARTICLE, END};
 
 int main (int argc, char ** argv) {
 	//read_file
 	if(argc > 1)
-	read_file(argv[1]);
-	
+	read_file(argv[1]);	
 	//process data
 }
 
@@ -24,32 +32,18 @@ static int read_file(char * filename) {
 	FILE * file = fopen(filename, "r");
 	char line[MAX_LN_SIZE];
 	unsigned short reader_state = NB_ROBOT;
+	unsigned int line_count = 0;
 	int nb_robot;
 	int nb_particle;
 	int robot_count = 0;
 	int particle_count = 0;
 	if (file) {
 		while(fgets(line, MAX_LN_SIZE, file) != NULL) {
+			line_count++;
 			if((line[0]=='\n')||(line[0]=='\r')||(line[0]=='#')) {
 				continue;
 			}
-			if(detect_fin_liste(line)) {
-				switch (reader_state) {
-					case ROBOT:
-						if(robot_count != nb_robot) {
-							error_invalid_nb_robots();
-						}
-						reader_state = NB_PARTICLE;
-						break;
-					case PARTICLE: 
-						if(particle_count != nb_particle) {
-							error_invalid_nb_particules();
-						}
-						reader_state = END;
-						break;
-				}
-				continue;
-			}
+			remove_comments(line);
 			switch (reader_state) {
 				case NB_ROBOT:
 					if(sscanf(line, "%d", &nb_robot) == 1) {
@@ -58,7 +52,18 @@ static int read_file(char * filename) {
 					}
 					break;
 				case ROBOT:
+					if(detect_fin_liste(line))
+						error_fin_liste_robots(line_count);
 					read_robot(line, &robot_count);
+					if(robot_count == nb_robot)
+						reader_state = END_ROBOT;
+					break;
+				case END_ROBOT:
+					if(detect_fin_liste(line)) {
+						reader_state = NB_PARTICLE;
+					} else if(detect_anything(line)) {
+						error_missing_fin_liste_robots(line_count);
+					}
 					break;
 				case NB_PARTICLE:
 					if(sscanf(line, "%d", &nb_particle) == 1) {
@@ -67,7 +72,18 @@ static int read_file(char * filename) {
 					}
 					break;
 				case PARTICLE:
-					read_particle(line, &particle_count);
+					if(detect_fin_liste(line))
+							error_fin_liste_particules(line_count);
+					read_particle(line, &particle_count, nb_particle, line_count);
+					if(particle_count == nb_particle)
+						reader_state = END_PARTICLE;
+					break;
+				case END_PARTICLE:
+					if(detect_fin_liste(line)) {
+						reader_state = END;
+					} else if(detect_anything(line)) {
+						error_missing_fin_liste_particules(line_count);
+					}
 					break;
 				case END:
 					break;
@@ -109,10 +125,13 @@ static void read_robot(char * line, int * p_robot_count) {
 	}
 }
 
-static void read_particle(char * line, int * p_particle_count) {
+static void read_particle(char * line, int * p_particle_count, int nb_particle, unsigned int line_count) {
 	double particle_x, particle_y, particle_r, particle_e;
 	int align = 0;
 	char * token = strtok(line, " ");
+	if(*p_particle_count == nb_particle) {
+		error_missing_fin_liste_particules(line_count);
+	}
 	while(token) {
 		double tmp;
 		if(sscanf(token, "%lf", &tmp) == 1) {
@@ -162,4 +181,15 @@ static int detect_fin_liste(char * line) {
 	} else {
 		return 0;
 	}
+}
+
+static int detect_anything(char * line) {
+	for(int i = 0; i < MAX_LN_SIZE; i++) {
+		printf("%c/", line[i]);
+		if((line[i] > 32)&&(line[i] <= 127)) {
+			printf("%d %c %d\n", line[i], line[i], i);
+			return 1;
+		}
+	}
+	return 0;
 }
