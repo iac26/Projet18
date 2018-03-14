@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <string.h>
 
@@ -70,7 +71,7 @@ int read_file(char * filename) {
 						error_fin_liste_particules(line_count);
 						return 0;
 					}
-					read_particle(line, &particle_count, nb_particle, line_count);
+					read_particle(line, &particle_count);
 					if(particle_count == nb_particle)
 						reader_state = END_PARTICLE;
 					break;
@@ -96,66 +97,66 @@ int read_file(char * filename) {
 static void read_robot(char * line, int * p_robot_count) {
 	double robot_x, robot_y, robot_a;
 	int align = 0;
-	char * token = strtok(line, " \t\r\n\v\f");
-	while(token) {
-		double tmp;
-		if(sscanf(token, "%lf", &tmp) == 1) {
-			switch (align) {
-				case 0:
-					robot_x = tmp;
-					break;
-				case 1:
-					robot_y = tmp;
-					break;
-				case 2:
-					robot_a = tmp;
-					break;
-			}
-			align++;
+	char * start;
+	char * end;
+	start = line;
+	double tmp;
+	while(sscanf(start, "%lf", &tmp) == 1) {
+		strtod(start, &end);
+		start = end;
+		switch (align) {
+			case 0:
+				robot_x = tmp;
+				break;
+			case 1:
+				robot_y = tmp;
+				break;
+			case 2:
+				robot_a = tmp;
+				break;
 		}
+		align++;
 		if(align == 3) {
 			//printf("robot %g %g %g\n", robot_x, robot_y, robot_a);
 			if(p_robot_count)
 				*p_robot_count += 1;
 			align = 0;
 		}
-		token = strtok(NULL, " \t\r\n\v\f");
+		
 	}
 }
 
-static void read_particle(char * line, int * p_particle_count, int nb_particle, unsigned int line_count) {
+static void read_particle(char * line, int * p_particle_count) {
 	double particle_x, particle_y, particle_r, particle_e;
 	int align = 0;
-	char * token = strtok(line, " \t\r\n\v\f");
-	if(*p_particle_count == nb_particle) {
-		error_missing_fin_liste_particules(line_count);
-	}
-	while(token) {
-		double tmp;
-		if(sscanf(token, "%lf", &tmp) == 1) {
-			switch (align) {
-				case 0:
-					particle_e = tmp;
-					break;
-				case 1:
-					particle_r = tmp;
-					break;
-				case 2:
-					particle_x = tmp;
-					break;
-				case 3:
-					particle_y = tmp;
-					break;
-			}
-			align++;
+	char * start;
+	char * end;
+	start = line;
+	double tmp;
+	while(sscanf(start, "%lf", &tmp) == 1) {
+		strtod(start, &end);
+		start = end;
+		switch (align) {
+			case 0:
+				particle_e = tmp;
+				break;
+			case 1:
+				particle_r = tmp;
+				break;
+			case 2:
+				particle_x = tmp;
+				break;
+			case 3:
+				particle_y = tmp;
+				break;
 		}
+		align++;
 		if(align == 4) {
 			//printf("particle %g %g %g %g\n", particle_e, particle_r, particle_x, particle_y);
 			if(p_particle_count)
 				*p_particle_count += 1;
 			align = 0;
 		}
-		token = strtok(NULL, " \t\r\n\v\f");
 	}
 }
 
