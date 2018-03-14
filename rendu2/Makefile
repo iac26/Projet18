@@ -10,5 +10,5 @@ main.x : $(OFILES)
 error.o : error.c error.h constantes.h
 	gcc -c $< -o $@
 	
-read.o : read.c read.h error.h constantes.h
+read.o : read/read.c read/read.h error.h constantes.h
 	gcc -c $< -o $@

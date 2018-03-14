@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "read.h"
-#include "error.h"
-#include "constantes.h"
+#include "../error.h"
+#include "../constantes.h"
 
 //read beta LOL
 //new reading pattern

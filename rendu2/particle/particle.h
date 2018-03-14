@@ -8,6 +8,7 @@ static typedef struct {
 	double y;
 }PARTICLE;
 
+PARTICLE * particle_create(double e, double r, double x, double y);
 
 
 #endif
