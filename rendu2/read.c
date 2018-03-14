@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "read.h"
-#include "../error.h"
-#include "../constantes.h"
+#include "error.h"
+#include "constantes.h"
 
 //read beta LOL
 //new reading pattern
@@ -96,7 +96,7 @@ int read_file(char * filename) {
 static void read_robot(char * line, int * p_robot_count) {
 	double robot_x, robot_y, robot_a;
 	int align = 0;
-	char * token = strtok(line, " ");
+	char * token = strtok(line, " \t\r\n\v\f");
 	while(token) {
 		double tmp;
 		if(sscanf(token, "%lf", &tmp) == 1) {
@@ -117,15 +117,16 @@ static void read_robot(char * line, int * p_robot_count) {
 			//printf("robot %g %g %g\n", robot_x, robot_y, robot_a);
 			if(p_robot_count)
 				*p_robot_count += 1;
+			align = 0;
 		}
-		token = strtok(NULL, " ");
+		token = strtok(NULL, " \t\r\n\v\f");
 	}
 }
 
 static void read_particle(char * line, int * p_particle_count, int nb_particle, unsigned int line_count) {
 	double particle_x, particle_y, particle_r, particle_e;
 	int align = 0;
-	char * token = strtok(line, " ");
+	char * token = strtok(line, " \t\r\n\v\f");
 	if(*p_particle_count == nb_particle) {
 		error_missing_fin_liste_particules(line_count);
 	}
@@ -154,7 +155,7 @@ static void read_particle(char * line, int * p_particle_count, int nb_particle, 
 				*p_particle_count += 1;
 			align = 0;
 		}
-		token = strtok(NULL, " ");
+		token = strtok(NULL, " \t\r\n\v\f");
 	}
 }
 
