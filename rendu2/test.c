@@ -6,20 +6,20 @@
 
 #include "read.h"
 #include "robot.h"
+#include "particle.h"
+
 
 int main(int argc, char ** argv) {
 	
 	if (argc > 1) {
-		read_file(argv[1]);
+		if(read_file(argv[1])) {
+			robot_print();
+			particle_print();
+		}
 	}
-	unsigned int a = robot_create(1, 1, 1);
-	robot_create(2, 1, 1);
-	robot_create(1, 2, 0);
-	printf("%u\n", a);
-	robot_print();
-	robot_delete(a);
-	robot_print();
+	
 	
 	
 	return EXIT_SUCCESS;
 }
+

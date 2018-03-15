@@ -1,6 +1,6 @@
 #Makefile
 
-OFILES_T=test.o robot.o error.o read.o 
+OFILES_T=test.o robot.o error.o read.o particle.o
 CC=gcc
 
 all : test.x
@@ -18,4 +18,7 @@ read.o : read.c read.h robot.h error.h constantes.h
 	$(CC) -c $< -o $@
 	
 robot.o : robot.c robot.h constantes.h utilitaire.h
+	$(CC) -c $< -o $@
+	
+particle.o : particle.c particle.h constantes.h utilitaire.h
 	$(CC) -c $< -o $@

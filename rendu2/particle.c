@@ -1,18 +1,97 @@
 #include <stdio.h>
-#include <math.h>
-#include <string.h>
+#include <stdlib.h>
 
 #include "utilitaire.h"
 #include "particle.h"
 #include "constantes.h"
+ 
+static PARTICLE * head = NULL; 
+static unsigned int particle_count = 0;
+static unsigned int particle_count_u = 0;
 
-PARTICLE * particle_create(double e, double r, double x, double y) {
+struct particle{
+	C2D body;
+	double energy;
+	unsigned int u_id;
+	unsigned int i_id;
+	PARTICLE * next;
+};
+ 
+unsigned int particle_create(double e, double r, double x, double y) {
 	PARTICLE * p = malloc(sizeof(PARTICLE));
 	if(p) {
-		p->e = e;
-		p->r = r;
-		p->x = x;
-		p->y = y;
+		particle_count_u++;
+		p->body.centre.x = x;
+		p->body.centre.y = y;
+		p->body.rayon = r;
+		p->energy = e;
+		p->i_id = particle_count;
+		p->u_id = particle_count_u;
+		p->next = head;
+		head = p; 
+		particle_count++;
 	}
-	return p;
+	return particle_count_u;
 }
+
+void particle_print(void) {
+	PARTICLE * p = head;
+	printf("PARTICLES\n");
+	while(p) {
+		printf("particule: %u, %u, %lf %lf %lf %lf\n", p->i_id, p->u_id, p->energy, p->body.rayon, p->body.centre.x, p->body.centre.y);
+		PARTICLE * tmp = p;
+		p = tmp->next;
+	}
+}
+
+int particle_delete_i(unsigned int id) {
+	if(head->i_id == id) {
+		PARTICLE * tmp = head->next;
+		free(head);
+		head = tmp;
+		particle_count--;
+		return 1;
+	}
+	head->i_id -= 1;
+	PARTICLE * p = head->next;
+	PARTICLE * prev = head;
+	while(p) {
+		if(p->i_id == id) {
+			prev->next = p->next;
+			free(p);
+			particle_count--;
+			return 1;
+		}
+		p->i_id -= 1;
+		prev = p;
+		p = prev->next;
+	}
+	return 0;
+}
+
+int particle_delete_u(unsigned int id) {
+	if(head->u_id == id) {
+		PARTICLE * tmp = head->next;
+		free(head);
+		head = tmp;
+		particle_count--;
+		return 1;
+	}
+	head->i_id -= 1;
+	PARTICLE * p = head->next;
+	PARTICLE * prev = head;
+	while(p) {
+		if(p->u_id == id) {
+			prev->next = p->next;
+			free(p);
+			particle_count--;
+			return 1;
+		}
+		p->i_id -= 1;
+		prev = p;
+		p = prev->next;
+	}
+	return 0;
+}
+
+

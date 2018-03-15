@@ -6,6 +6,7 @@
 #include "read.h"
 #include "error.h"
 #include "robot.h"
+#include "particle.h"
 #include "constantes.h"
 
 //read beta LOL
@@ -111,6 +112,7 @@ static void read_robot(char * line, int * p_robot_count) {
 		}
 		align++;
 		if(align == 3) {
+			robot_create(robot_x, robot_y, robot_a);
 			//printf("robot %g %g %g\n", robot_x, robot_y, robot_a);
 			if(p_robot_count)
 				*p_robot_count += 1;
@@ -147,6 +149,7 @@ static void read_particle(char * line, int * p_particle_count) {
 		align++;
 		if(align == 4) {
 			//printf("particle %g %g %g %g\n", particle_e, particle_r, particle_x, particle_y);
+			particle_create(particle_e, particle_r, particle_x, particle_y);
 			if(p_particle_count)
 				*p_particle_count += 1;
 			align = 0;
