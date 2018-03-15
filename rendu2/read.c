@@ -8,6 +8,7 @@
 #include "robot.h"
 #include "particle.h"
 #include "constantes.h"
+#include "utilitaire.h"
 
 //read beta LOL
 //new reading pattern
@@ -22,51 +23,73 @@
 
 enum{CHECKING, ERASING};
 enum{NB_ROBOT, READ_ROBOT, END_ROBOT, NB_PARTICLE, END_PARTICLE, READ_PARTICLE, END};
+static int robot_count;
+static int particle_count;
 
 int read_file(char * filename) {
 	FILE * file = fopen(filename, "r");
 	char line[MAX_LINE];
 	unsigned short reader_state = NB_ROBOT;
 	unsigned int line_count = 0;
-	int nb_robot, nb_particle, robot_count = 0, particle_count = 0;
+	int nb_robot, nb_particle;
+	robot_count = 0;
+	particle_count = 0;
 	if (file) {
 		while(fgets(line, MAX_LINE, file) != NULL) {
 			line_count++;
-			if((line[0]=='\n')||(line[0]=='\r')||(line[0]=='#'))
-				continue;
 			remove_comments(line);
+			if(!detect_anything(line))
+				continue;
 			switch (reader_state) {
 				case NB_ROBOT:
-					if(sscanf(line, "%d", &nb_robot) == 1)
+					if(sscanf(line, "%d", &nb_robot) == 1) {
 						reader_state = READ_ROBOT;
+					} else {
+						error_invalid_nb_robots();
+						return 0;
+					}
+					if(nb_robot < 0) {
+						error_invalid_nb_robots();
+						return 0;
+					}
 					break;
 				case READ_ROBOT:
 					if(detect_fin_liste(line)) {
 						error_fin_liste_robots(line_count);
 						return 0;
 					}
-					read_robot(line, &robot_count);
+					if(!read_robot(line))
+						return 0;
 					if(robot_count == nb_robot)
 						reader_state = END_ROBOT;
 					break;
 				case END_ROBOT:
 					if(detect_fin_liste(line)) {
 						reader_state = NB_PARTICLE;
-					} else if(detect_anything(line)) {
+					} else if(detect_anything(line)){
 						error_missing_fin_liste_robots(line_count);
 						return 0;
 					}
 					break;
 				case NB_PARTICLE:
-					if(sscanf(line, "%d", &nb_particle) == 1)
+					if(sscanf(line, "%d", &nb_particle) == 1) {
 						reader_state = READ_PARTICLE;
+					} else {
+						error_invalid_nb_particules();
+						return 0;
+					}
+					if(nb_robot < 0) {
+						error_invalid_nb_particules();
+						return 0;
+					}
 					break;
 				case READ_PARTICLE:
 					if(detect_fin_liste(line)) {
 						error_fin_liste_particules(line_count);
 						return 0;
 					}
-					read_particle(line, &particle_count);
+					if(!read_particle(line)) 
+						return 0;
 					if(particle_count == nb_particle)
 						reader_state = END_PARTICLE;
 					break;
@@ -81,6 +104,7 @@ int read_file(char * filename) {
 				case END:
 					break;
 			}
+			reset_str(line);
 		}
 	} else {
 		error_file_missing(filename);
@@ -91,8 +115,9 @@ int read_file(char * filename) {
 	return 1;
 }
 
-static void read_robot(char * line, int * p_robot_count) {
-	double robot_x, robot_y, robot_a;
+static int read_robot(char * line) {
+	S2D a;
+	double robot_a;
 	int align = 0;
 	char * start;
 	char * end;
@@ -103,10 +128,10 @@ static void read_robot(char * line, int * p_robot_count) {
 		start = end;
 		switch (align) {
 			case 0:
-				robot_x = tmp;
+				a.x = tmp;
 				break;
 			case 1:
-				robot_y = tmp;
+				a.y = tmp;
 				break;
 			case 2:
 				robot_a = tmp;
@@ -114,18 +139,23 @@ static void read_robot(char * line, int * p_robot_count) {
 		}
 		align++;
 		if(align == 3) {
-			robot_create(robot_x, robot_y, robot_a);
+			if(util_point_dehors(a, DMAX)||util_alpha_dehors(robot_a)) {
+				error_invalid_robot_angle(robot_a);
+				return 0;
+			}
+			robot_create(a.x, a.y, robot_a);
 			//printf("robot %g %g %g\n", robot_x, robot_y, robot_a);
-			if(p_robot_count)
-				*p_robot_count += 1;
+			robot_count++;
 			align = 0;
 		}
 		
 	}
+	return 1;
 }
 
-static void read_particle(char * line, int * p_particle_count) {
-	double particle_x, particle_y, particle_r, particle_e;
+static int read_particle(char * line) {
+	C2D a;
+	double particle_e;
 	int align = 0;
 	char * start;
 	char * end;
@@ -139,25 +169,28 @@ static void read_particle(char * line, int * p_particle_count) {
 				particle_e = tmp;
 				break;
 			case 1:
-				particle_r = tmp;
+				a.rayon = tmp;
 				break;
 			case 2:
-				particle_x = tmp;
+				a.centre.x = tmp;
 				break;
 			case 3:
-				particle_y = tmp;
+				a.centre.y = tmp;
 				break;
 		}
 		align++;
 		if(align == 4) {
-			//printf("particle %g %g %g %g\n", particle_e, particle_r, particle_x, particle_y);
-			if
-			particle_create(particle_e, particle_r, particle_x, particle_y);
-			if(p_particle_count)
-				*p_particle_count += 1;
+			if(	util_point_dehors(a.centre, DMAX)||(particle_e > E_PARTICULE_MAX)||
+				(a.rayon > R_PARTICULE_MAX)||(a.rayon < R_PARTICULE_MIN)) {
+				error_invalid_particule_value(particle_e, a.rayon, a.centre.x, a.centre.y);
+				return 0;
+			}
+			particle_create(particle_e, a.rayon, a.centre.x, a.centre.y);
+			particle_count++;
 			align = 0;
 		}
 	}
+	return 1;
 }
 
 static void remove_comments(char * line) {
@@ -189,4 +222,10 @@ static int detect_anything(char * line) {
 		}
 	}
 	return 0;
+}
+
+static void reset_str(char * line) {
+	for (int i = 0; i < MAX_LINE; i++) {
+		line[i] = ' ';
+	}
 }

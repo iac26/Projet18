@@ -97,6 +97,7 @@ int robot_delete_u(unsigned int id) {
 
 void robot_get_init(unsigned int id) {
 	ROBOT * p = head;
+	last = head;
 	while(p){
 		if(p->i_id == id) {
 			last = p;
@@ -104,7 +105,6 @@ void robot_get_init(unsigned int id) {
 		}
 		p = p->next;
 	}
-	last = head;
 }
 
 void robot_set_nb(int nb) {

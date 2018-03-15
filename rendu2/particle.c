@@ -106,6 +106,7 @@ int particle_get_nb(void) {
 
 void particle_get_init(unsigned int id) {
 	PARTICLE * p = head;
+	last = head;
 	while(p){
 		if(p->i_id == id) {
 			last = p;
@@ -113,7 +114,6 @@ void particle_get_init(unsigned int id) {
 		}
 		p = p->next;
 	}
-	last = head;
 }
 
 void particle_get(double * e, double * rad, double * x, double * y, unsigned int * i_id, unsigned int * u_id) {
