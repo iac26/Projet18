@@ -7,6 +7,7 @@
 #include "read.h"
 #include "robot.h"
 #include "particle.h"
+#include "model.h"
 
 
 int main(int argc, char ** argv) {
@@ -15,6 +16,7 @@ int main(int argc, char ** argv) {
 		if(read_file(argv[1])) {
 			robot_print();
 			particle_print();
+			model_collisions();
 		}
 	}
 	

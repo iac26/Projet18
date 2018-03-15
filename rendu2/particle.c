@@ -6,8 +6,10 @@
 #include "constantes.h"
  
 static PARTICLE * head = NULL; 
+static PARTICLE * last = NULL;
 static unsigned int particle_count = 0;
 static unsigned int particle_count_u = 0;
+static int nb_particle = 0;
 
 struct particle{
 	C2D body;
@@ -92,6 +94,43 @@ int particle_delete_u(unsigned int id) {
 		p = prev->next;
 	}
 	return 0;
+}
+
+void particle_set_nb(int nb) {
+	nb_particle = nb;
+}
+
+int particle_get_nb(void) {
+	return nb_particle;
+} 
+
+void particle_get_init(unsigned int id) {
+	PARTICLE * p = head;
+	while(p){
+		if(p->i_id == id) {
+			last = p;
+			break;
+		}
+		p = p->next;
+	}
+	last = head;
+}
+
+void particle_get(double * e, double * rad, double * x, double * y, unsigned int * i_id, unsigned int * u_id) {
+	if(x)
+		*x = last->body.centre.x;
+	if(y)
+		*y = last->body.centre.y;
+	if(e)
+		*e = last->energy;
+	if(rad)
+		*rad = last->body.rayon;
+	if(i_id)
+		*i_id = last->i_id;
+	if(u_id)
+		*u_id = last->u_id;
+	if(last)
+		last = last->next; 
 }
 
 

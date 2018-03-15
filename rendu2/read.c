@@ -86,6 +86,8 @@ int read_file(char * filename) {
 		error_file_missing(filename);
 		return 0;
 	}
+	robot_set_nb(nb_robot);
+	particle_set_nb(nb_particle);
 	return 1;
 }
 
@@ -149,6 +151,7 @@ static void read_particle(char * line, int * p_particle_count) {
 		align++;
 		if(align == 4) {
 			//printf("particle %g %g %g %g\n", particle_e, particle_r, particle_x, particle_y);
+			if
 			particle_create(particle_e, particle_r, particle_x, particle_y);
 			if(p_particle_count)
 				*p_particle_count += 1;
