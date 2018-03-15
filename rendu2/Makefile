@@ -1,14 +1,21 @@
 #Makefile
 
-OFILES=error.o read.o 
+OFILES_T=test.o robot.o error.o read.o 
+CC=gcc
 
-all : main.x
+all : test.x
 
-main.x : $(OFILES)
-	gcc $(OFILES) -o $@
-
-error.o : error.c error.h constantes.h
-	gcc -c $< -o $@
+test.x : $(OFILES_T)
+	$(CC) $(OFILES_T) -o $@
 	
-read.o : read.c read.h error.h constantes.h
-	gcc -c $< -o $@
+test.o : test.c robot.h read.h
+	$(CC) -c $< -o $@
+	
+error.o : error.c error.h constantes.h
+	$(CC) -c $< -o $@
+	
+read.o : read.c read.h robot.h error.h constantes.h
+	$(CC) -c $< -o $@
+	
+robot.o : robot.c robot.h constantes.h utilitaire.h
+	$(CC) -c $< -o $@

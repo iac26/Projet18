@@ -5,6 +5,7 @@
 
 #include "read.h"
 #include "error.h"
+#include "robot.h"
 #include "constantes.h"
 
 //read beta LOL
@@ -20,13 +21,6 @@
 
 enum{CHECKING, ERASING};
 enum{NB_ROBOT, READ_ROBOT, END_ROBOT, NB_PARTICLE, END_PARTICLE, READ_PARTICLE, END};
-
-int main (int argc, char ** argv) {
-	//read_file
-	if(argc > 1)
-		read_file(argv[1]);	
-	//process data
-}
 
 int read_file(char * filename) {
 	FILE * file = fopen(filename, "r");

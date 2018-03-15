@@ -1,15 +1,13 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-static typedef struct {
-	double x;
-	double y;
-	double a;
-}ROBOT;
+#include "utilitaire.h"
 
-ROBOT ** robot_init(int nb_robot);
-void robot_delete_all(ROBOT ** list, int nb_robot)
-ROBOT * robot_create(double x, double y, double a);
+typedef struct robot ROBOT;
+
+int robot_delete(unsigned int id);
+void robot_print(void);
+unsigned int robot_create(double x, double y, double a);
 
 
 #endif
