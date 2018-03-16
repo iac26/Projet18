@@ -13,7 +13,7 @@ int model_collisions() {
 	robot_collision();
 	particle_collision();
 	cross_collision();
-		return 1;
+	return 1;
 }
 
 static void robot_collision(void) {
