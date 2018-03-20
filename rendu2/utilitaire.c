@@ -62,7 +62,7 @@ bool util_collision_cercle(C2D a, C2D b, double *p_dist) {
 	if(p_dist) {
 		*p_dist = dist;
 	}
-	if(dist < (a.rayon + b.rayon - EPSIL_ZERO)) {
+	if(dist < ((a.rayon + b.rayon) - EPSIL_ZERO)) {
 		return true;
 	}
 	return false;

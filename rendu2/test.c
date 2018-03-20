@@ -20,10 +20,6 @@ int main(int argc, char ** argv) {
 			particle_print();
 			model_collisions();
 		}
-	} else {
-		for(int i = 0; i < 128; i++) {
-		printf("%d : %c\n", i, i);
-	}
 	}
 	
 	

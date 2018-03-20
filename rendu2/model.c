@@ -44,6 +44,7 @@ static void particle_collision(void) {
 		for(int j = i-1; j >= 0; j--) {
 			particle_get(NULL, &(b.rayon), &(b.centre.x), &(b.centre.y), NULL, &id_b);
 			if(util_collision_cercle(a, b, NULL)) {
+				//printf("r1: %lf x1: %lf y1: %lf // r2: %lf x2: %lf y2: %lf //\n", a.rayon, a.centre.x, a.centre.y, b.rayon, b.centre.x, b.centre.y);
 				error_collision(PARTICULE_PARTICULE, id_a, id_b);
 			}
 		}
