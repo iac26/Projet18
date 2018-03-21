@@ -3,14 +3,16 @@
 #include <string.h>
 #include <math.h>
 #include <GLUT/glut.h>
+//#include <GL/glui.h>
 
-
-#include "read.h"
-#include "robot.h"
-#include "particle.h"
-#include "model.h"
-#include "graphic.h"
-#include "constantes.h"
+extern "C" {
+	#include "read.h"
+	#include "robot.h"
+	#include "particle.h"
+	#include "model.h"
+	#include "graphic.h"
+	#include "constantes.h"
+}
 
 #define WIDTH 800
 #define HEIGHT 800
@@ -34,13 +36,13 @@ int main(int argc, char ** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200,200);
 	glutInitWindowSize(WIDTH,HEIGHT);
-	glutCreateWindow("ROBOTS"); 
+	glutCreateWindow("ROBOTS");
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glOrtho(-DMAX, DMAX, -DMAX, DMAX, -1, 1);
 	glutDisplayFunc(graphic_affichage);
 	glutReshapeFunc(graphic_reshape);
 	glutIdleFunc(graphic_affichage);
-	glutKeyboardFunc(keyboard);
+	//glutKeyboardFunc(keyboard);
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glutMainLoop();
 	

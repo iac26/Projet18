@@ -1,9 +1,10 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-int model_collisions(void);
-static void robot_collision(void);
-static void particle_collision(void);
-static void cross_collision(void);
+
+int initial_collisions(void);
+static int robot_collision(double * p_dist, unsigned int * p_id_a, unsigned int * p_id_b);
+static int particle_collision(double * p_dist, unsigned int * p_id_a, unsigned int * p_id_b);
+static int cross_collision(double * p_dist, unsigned int * p_id_a, unsigned int * p_id_b);
 
 #endif

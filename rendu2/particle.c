@@ -104,11 +104,23 @@ int particle_get_nb(void) {
 	return nb_particle;
 } 
 
-void particle_get_init(unsigned int id) {
+void particle_get_init_i(unsigned int id) {
 	PARTICLE * p = head;
 	last = head;
 	while(p){
 		if(p->i_id == id) {
+			last = p;
+			break;
+		}
+		p = p->next;
+	}
+}
+
+void particle_get_init_u(unsigned int id) {
+	PARTICLE * p = head;
+	last = head;
+	while(p){
+		if(p->u_id == id) {
 			last = p;
 			break;
 		}

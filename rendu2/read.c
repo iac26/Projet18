@@ -10,16 +10,6 @@
 #include "constantes.h"
 #include "utilitaire.h"
 
-//read beta LOL
-//new reading pattern
-/* first delete the comments.
- * the first number appearing is nb_robot
- * the following nb_robot*3 numbers are robots
- * if a fin liste is encountered before --> error
- * after reading the nb_robot*3 values there should be a FIN_LISTE
- * if there isnt -> error
- * the same for the particles!
- * */
 
 enum{CHECKING, ERASING};
 enum{NB_ROBOT, READ_ROBOT, END_ROBOT, NB_PARTICLE, END_PARTICLE, READ_PARTICLE, END};

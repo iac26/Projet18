@@ -95,11 +95,23 @@ int robot_delete_u(unsigned int id) {
 	return 0;
 }
 
-void robot_get_init(unsigned int id) {
+void robot_get_init_i(unsigned int id) {
 	ROBOT * p = head;
 	last = head;
 	while(p){
 		if(p->i_id == id) {
+			last = p;
+			break;
+		}
+		p = p->next;
+	}
+}
+
+void robot_get_init_u(unsigned int id) {
+	ROBOT * p = head;
+	last = head;
+	while(p){
+		if(p->u_id == id) {
 			last = p;
 			break;
 		}
