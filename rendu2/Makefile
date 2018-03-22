@@ -2,7 +2,7 @@
 
 OFILES_T=test.o robot.o error.o read.o particle.o utilitaire.o model.o graphic.o
 CC=gcc
-LIB=-framework GLUT -framework OpenGL -framework Cocoa
+LIB=-lglui -lglut -framework OpenGL -framework Cocoa
 
 all : test.x
 

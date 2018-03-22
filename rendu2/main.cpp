@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <GLUT/glut.h>
-//#include <GL/glui.h>
+#include <GL/glut.h>
+#include <GL/glui.h>
 
 extern "C" {
 	#include "read.h"
@@ -21,7 +21,7 @@ extern "C" {
 static void affichage(void);
 static void reshape(int w, int h);
 static void keyboard(char key);
-
+static GLUI win;
 
 int main(int argc, char ** argv) {
 	
@@ -42,7 +42,6 @@ int main(int argc, char ** argv) {
 	glutDisplayFunc(graphic_affichage);
 	glutReshapeFunc(graphic_reshape);
 	glutIdleFunc(graphic_affichage);
-	//glutKeyboardFunc(keyboard);
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glutMainLoop();
 	
