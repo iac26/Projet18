@@ -21,7 +21,8 @@ extern "C" {
 static void affichage(void);
 static void reshape(int w, int h);
 static void keyboard(char key);
-static GLUI win;
+static int g_window;
+static void quit(void);
 
 int main(int argc, char ** argv) {
 	
@@ -36,13 +37,22 @@ int main(int argc, char ** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200,200);
 	glutInitWindowSize(WIDTH,HEIGHT);
-	glutCreateWindow("ROBOTS");
+	g_window = glutCreateWindow("ROBOTS");
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glOrtho(-DMAX, DMAX, -DMAX, DMAX, -1, 1);
 	glutDisplayFunc(graphic_affichage);
 	glutReshapeFunc(graphic_reshape);
-	glutIdleFunc(graphic_affichage);
 	glClearColor(1.0, 1.0, 1.0, 0.0);
+	
+	GLUI * glui = GLUI_Master.create_glui("CONTROL", 0, 900, 200);
+	
+	new GLUI_StaticText(glui, "TEEEEESTEUH");
+	
+	new GLUI_Button(glui, "EXIT", 0, (GLUI_Update_CB)quit);
+	
+	glui->set_main_gfx_window(g_window);
+	
+	GLUI_Master.set_glutIdleFunc(NULL);
 	glutMainLoop();
 	
 	
@@ -59,6 +69,11 @@ static void keyboard(char key) {
 			break;
 		
 	}
+}
+
+static void quit(void) {
+	glutDestroyWindow(g_window);
+	exit(0);
 }
 
 

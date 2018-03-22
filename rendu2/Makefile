@@ -2,7 +2,7 @@
 
 OFILES_T=test.o robot.o error.o read.o particle.o utilitaire.o model.o graphic.o
 CC=gcc
-LIB=-lglui -lglut -framework OpenGL -framework Cocoa
+LIB= -lGL -lglut -lglui -lm -lstdc++
 
 all : test.x
 
@@ -32,3 +32,6 @@ particle.o : particle.c particle.h constantes.h utilitaire.h
 	
 graphic.o : graphic.c graphic.h constantes.h utilitaire.h
 	$(CC) -c $< -o $@
+	
+clean : 
+	rm -f *.o

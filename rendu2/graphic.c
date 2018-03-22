@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include <GLUT/glut.h>
+#include <GL/glut.h>
 
 #include "utilitaire.h"
 #include "graphic.h"
