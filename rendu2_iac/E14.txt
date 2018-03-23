@@ -1,0 +1,25 @@
+# particule collision
+#
+# number of robots
+3		
+	 # robot 1				
+	 0.00  0.00 0	
+	 # robot 2	
+	 1.00  1.00 0
+	 # robot 3		
+	 1.00  2.00 0		
+FIN_LISTE
+
+# number of particules
+5				
+	# particule 1
+	1 2 -2  2
+	# particule 2			
+	1 2  2 -2		
+	# particule 3	
+	1 2  4 -2	
+	# particule 4		
+	1 2  5 -2			
+	# particule 5
+	1 2  9 -2			
+FIN_LISTE

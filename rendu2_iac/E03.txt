@@ -1,7 +1,7 @@
-# simple correct file / may have additional spaces
+# invalid file - too many robots
 
 # number of robots
-3		
+2	
 	 # robot 1
 	 0  0 0			
 	 # robot 2

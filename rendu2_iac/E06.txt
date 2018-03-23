@@ -1,11 +1,11 @@
-# simple correct file / may have additional spaces
+# invalid file - robot angle is not within [-pi, pi] rd
 
 # number of robots
-3		
+3	
 	 # robot 1
 	 0  0 0			
 	 # robot 2
-	 1  1 0	
+	 1  1 -4
 	 # robot 3
 	-1 -1 0			
 FIN_LISTE
