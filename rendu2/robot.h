@@ -5,6 +5,7 @@ typedef struct robot ROBOT;
 
 int robot_delete_u(unsigned int id);
 int robot_delete_i(unsigned int id);
+void robot_delete_all(void);
 void robot_print(void);
 void robot_get_init_i(unsigned int id);
 void robot_get_init_u(unsigned int id);

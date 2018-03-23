@@ -96,6 +96,17 @@ int particle_delete_u(unsigned int id) {
 	return 0;
 }
 
+void particle_delete_all(void) {
+	PARTICLE * p = head;
+	PARTICLE * tmp;
+	while(p->next) {
+		tmp = p->next;
+		free(p);
+		p = tmp;
+	}
+	free(p);
+}
+
 void particle_set_nb(int nb) {
 	nb_particle = nb;
 }

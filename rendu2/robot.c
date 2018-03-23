@@ -70,6 +70,17 @@ int robot_delete_i(unsigned int id) {
 	return 0;
 }
 
+void robot_delete_all(void) {
+	ROBOT * r = head;
+	ROBOT * tmp;
+	while(r->next) {
+		tmp = r->next;
+		free(r);
+		r = tmp;
+	}
+	free(r);
+}
+
 int robot_delete_u(unsigned int id) {
 	if(head->u_id == id) {
 		ROBOT * tmp = head->next;

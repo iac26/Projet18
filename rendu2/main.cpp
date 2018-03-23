@@ -22,9 +22,10 @@ extern "C" {
 #define HEIGHT 800
 
 static void quit(void);
-static void stub(void);
+static void open(void);
 
 namespace {
+	char * filename;
 	int g_window;
 	GLUI * glui;
 }
@@ -47,15 +48,20 @@ int main(int argc, char ** argv) {
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glOrtho(-DMAX, DMAX, -DMAX, DMAX, -1, 1);
 	glutDisplayFunc(graphic_affichage);
-	glutReshapeFunc(graphic_reshape);
+	//glutReshapeFunc(graphic_reshape);
 	glClearColor(1.0, 1.0, 1.0, 0.0);
+	
+	//GLUI_Master.set_glutDisplayFunc(graphic_affichage); 
+	GLUI_Master.set_glutReshapeFunc(graphic_reshape);  
+	 
 	
 	glui = GLUI_Master.create_glui("CONTROL", 0, 900, 200);
 	
-	new GLUI_StaticText(glui, "TEEEEESTEUH");
+	new GLUI_StaticText(glui, "Fichier");
+	new GLUI_EditText(glui, "E01.txt", filename, 0, NULL);
 	
 	new GLUI_Button(glui, "EXIT", 0, (GLUI_Update_CB)quit);
-	new GLUI_Button(glui, "STUB", 0, (GLUI_Update_CB)stub);
+	new GLUI_Button(glui, "OPEN", 0, (GLUI_Update_CB)open);
 	
 	glui->set_main_gfx_window(g_window);
 	
@@ -66,8 +72,9 @@ int main(int argc, char ** argv) {
 	return EXIT_SUCCESS;
 }
 
-static void stub(void) {
-	printf("STUUUUUUUUUB\n");
+static void open(void) {
+	printf("Open\n");
+	read_file(filename);
 }
 
 

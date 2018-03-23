@@ -6,6 +6,7 @@ typedef struct particle PARTICLE;
 
 int particle_delete_u(unsigned int id);
 int particle_delete_i(unsigned int id);
+void particle_delete_all(void);
 void particle_print(void);
 void particle_get(double * e, double * rad, double * x, double * y, unsigned int * i_id, unsigned int * u_id);
 void particle_get_init_i(unsigned int id);
