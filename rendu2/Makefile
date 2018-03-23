@@ -1,37 +1,45 @@
 #Makefile
 
-OFILES_T=test.o robot.o error.o read.o particle.o utilitaire.o model.o graphic.o
+OFILES=main.o robot.o error.o read.o particle.o utilitaire.o model.o graphic.o
+CFILES=main.cpp robot.c error.c read.c particle.c utilitaire.c model.c graphic.c
 CC=gcc
+CFLAGS=-Wall
 LIB= -lGL -lglut -lglui -lm -lstdc++
+LIB_MAC= -framework GLUT -framework OpenGL -framework Cocoa -lglui -lm -lstdc++
 
 all : test.x
 
-test.x : $(OFILES_T)
-	$(CC) $(OFILES_T) -o $@ $(LIB)
-	
-test.o : main.cpp robot.h read.h model.h graphic.h
-	$(CC) -c $< -o $@
-	
-model.o : model.c model.h utilitaire.h robot.h particle.h error.h
-	$(CC) -c $< -o $@
-	
-utilitaire.o : utilitaire.c utilitaire.h tolerance.h
-	$(CC) -c $< -o $@
-	
-error.o : error.c error.h constantes.h
-	$(CC) -c $< -o $@
-	
-read.o : read.c read.h robot.h error.h constantes.h
-	$(CC) -c $< -o $@
-	
-robot.o : robot.c robot.h constantes.h utilitaire.h
-	$(CC) -c $< -o $@
-	
-particle.o : particle.c particle.h constantes.h utilitaire.h
-	$(CC) -c $< -o $@
-	
-graphic.o : graphic.c graphic.h constantes.h utilitaire.h
-	$(CC) -c $< -o $@
+mac : test_mac.x
+
+test_mac.x : $(OFILES)
+	$(CC) $(OFILES) -o $@ $(LIB_MAC)
+	@rm -f *.o
+
+test.x : $(OFILES)
+	$(CC) $(OFILES) -o $@ $(LIB)
+	@rm -f *.o
 	
 clean : 
-	rm -f *.o
+	@echo "CLEANING"
+	@rm -f *.o
+	
+depend : 
+	@echo "UPDATING DEPENDENCIES"
+	@(sed '/^# DEPENDANCES/q' Makefile && \
+	  $(CC) -MM $(CFLAGS) $(CFILES) | \
+	  egrep -v "/usr/include" \
+	 ) >Makefile.new
+	@mv Makefile.new Makefile
+
+# DEPENDANCES
+main.o: main.cpp read.h robot.h particle.h model.h graphic.h constantes.h \
+  tolerance.h
+robot.o: robot.c utilitaire.h tolerance.h robot.h constantes.h
+error.o: error.c error.h constantes.h tolerance.h
+read.o: read.c read.h error.h robot.h particle.h constantes.h tolerance.h \
+  utilitaire.h
+particle.o: particle.c utilitaire.h tolerance.h particle.h constantes.h
+utilitaire.o: utilitaire.c utilitaire.h tolerance.h
+model.o: model.c utilitaire.h tolerance.h error.h constantes.h robot.h \
+  particle.h model.h
+graphic.o: graphic.c utilitaire.h tolerance.h graphic.h constantes.h
