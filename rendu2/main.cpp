@@ -21,12 +21,14 @@ extern "C" {
 #define WIDTH 800
 #define HEIGHT 800
 
-
-static void affichage(void);
-static void reshape(int w, int h);
-static void keyboard(char key);
-static int g_window;
 static void quit(void);
+static void stub(void);
+
+namespace {
+	int g_window;
+	GLUI * glui;
+}
+
 
 int main(int argc, char ** argv) {
 	
@@ -48,11 +50,12 @@ int main(int argc, char ** argv) {
 	glutReshapeFunc(graphic_reshape);
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	
-	GLUI * glui = GLUI_Master.create_glui("CONTROL", 0, 900, 200);
+	glui = GLUI_Master.create_glui("CONTROL", 0, 900, 200);
 	
 	new GLUI_StaticText(glui, "TEEEEESTEUH");
 	
 	new GLUI_Button(glui, "EXIT", 0, (GLUI_Update_CB)quit);
+	new GLUI_Button(glui, "STUB", 0, (GLUI_Update_CB)stub);
 	
 	glui->set_main_gfx_window(g_window);
 	
@@ -63,17 +66,10 @@ int main(int argc, char ** argv) {
 	return EXIT_SUCCESS;
 }
 
-
-
-static void keyboard(char key) {
-	switch (key) {
-		case 27:
-			glutDestroyWindow(1);
-			exit(0);
-			break;
-		
-	}
+static void stub(void) {
+	printf("STUUUUUUUUUB\n");
 }
+
 
 static void quit(void) {
 	glutDestroyWindow(g_window);

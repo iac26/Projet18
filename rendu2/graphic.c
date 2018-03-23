@@ -6,7 +6,6 @@
 #else
 #include <GL/glut.h>
 #endif
-
 #include "utilitaire.h"
 #include "graphic.h"
 #include "constantes.h"
