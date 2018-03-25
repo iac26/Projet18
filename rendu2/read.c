@@ -100,9 +100,33 @@ int read_file(char * filename) {
 		error_file_missing(filename);
 		return 0;
 	}
-	robot_set_nb(nb_robot);
-	particle_set_nb(nb_particle);
 	return 1;
+}
+
+void read_save(char * filename) {
+	FILE * write = fopen(filename,"w");
+	double x, y, angle, e, rad;
+	int nb_robot, nb_particle;
+	nb_robot = robot_get_nb();
+	nb_particle = particle_get_nb();
+	robot_get_init_i(NULL);
+	particle_get_init_i(NULL);
+	printf("%d %d\n", nb_robot, nb_particle);
+	fprintf(write, "# \"%s\" computer generated save file\n\n", filename);
+	fprintf(write, "%d\n", nb_robot);
+	for(int i = 0; i < nb_robot; i++){
+		robot_get(&x, &y, &angle, NULL, NULL);
+		fprintf(write, "\t %2.5lf %2.5lf %2.5lf\n", x, y, angle);
+	}
+	fprintf(write, "FIN_LISTE\n\n");
+	
+	fprintf(write, "%d\n", nb_particle);
+	for(int i = 0; i < nb_particle; i++){
+		particle_get(&e, &rad, &x, &y, NULL, NULL);
+		fprintf(write, "%\t %2.5lf %2.5lf %2.5lf %2.5lf\n", e, rad, x, y);
+	}
+	fprintf(write, "FIN_LISTE\n\n");
+	fclose(write);
 }
 
 static int read_robot(char * line) {

@@ -7,15 +7,13 @@ CFLAGS=-Wall
 LIB= -lGL -lglut -lglui -lm -lstdc++
 LIB_MAC= -framework GLUT -framework OpenGL -framework Cocoa -lglui -lm -lstdc++
 
-all : test.x
+all : projet.x
 
-mac : test_mac.x
-
-test_mac.x : $(OFILES)
-	$(CC) $(OFILES) -o $@ $(LIB_MAC)
+mac : $(OFILES)
+	$(CC) $(OFILES) -o projet.x $(LIB_MAC)
 	@rm -f *.o
 
-test.x : $(OFILES)
+projet.x : $(OFILES)
 	$(CC) $(OFILES) -o $@ $(LIB)
 	@rm -f *.o
 	
