@@ -1,72 +1,43 @@
-# Compilateur a utiliser :
-##########################
+#Makefile
 
-CC     = gcc
+OFILES=main.o robot.o error.o read.o particle.o utilitaire.o model.o graphic.o
+CFILES=main.cpp robot.c error.c read.c particle.c utilitaire.c model.c graphic.c
+CC=gcc
+CFLAGS=-Wall
+LIB= -lGL -lglut -lglui -lm -lstdc++
+LIB_MAC= -framework GLUT -framework OpenGL -framework Cocoa -lglui -lm -lstdc++
 
-# Options de compilation : (-g = pour deverminer)
-#################################################
+all : projet.x
 
-CFLAGS = -g -Wall
+mac : $(OFILES)
+	$(CC) $(OFILES) -o projet.x $(LIB_MAC)
+	@rm -f *.o
 
-# Repertoire include :
-#########################
-
-#INCLUDE_DIR   = /usr/local/include/
-
-# Librairies a utiliser :
-#########################
-
-LIBS   = -lglut -lGL -lGLU -lm -Llib -L/usr/X11R6/lib -lX11 -lXext -lXmu -lXi
-
-# Liste de fichiers source (.c) a compiler :
-############################################
-
-CFILES = robot.c particle.c write.c
-
-# Liste de modules objets (generee a partir de CFILES) :
-########################################################
-
-OFILES = $(CFILES:.c=.o)
-
-# Nom du fichier executable :
-#############################
-
-CIBLE  = 19_0.x
-
-# edition de liens (rassembler tous les objets -> executable)
-#############################################################
-
-$(CIBLE): $(OFILES)
-	$(CC) $(OFILES) ${LIBS} -o $(CIBLE)
-
-
-# compilation separee (production du module objet seulement)
-
-19_0.o: 19_0.c
-	$(CC) -c 19_0.c $(CFLAGS)
-
-
-
-
-# Definitions de cibles particulieres :
-#
-# "make depend" : genere la liste des dependances
-# "make clean"  : efface les fichiers .o et .x
-#################################################
-
-depend:
-	@echo " *** MISE A JOUR DES DEPENDANCES ***"
-	@(sed '/^# DO NOT DELETE THIS LINE/q' Makefile && \
+projet.x : $(OFILES)
+	$(CC) $(OFILES) -o $@ $(LIB)
+	@rm -f *.o
+	
+clean : 
+	@echo "CLEANING"
+	@rm -f *.o
+	
+depend : 
+	@echo "UPDATING DEPENDENCIES"
+	@(sed '/^# DEPENDANCES/q' Makefile && \
 	  $(CC) -MM $(CFLAGS) $(CFILES) | \
 	  egrep -v "/usr/include" \
 	 ) >Makefile.new
 	@mv Makefile.new Makefile
 
-clean:
-	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
-	@/bin/rm -f *.o *.x
-
-#
-# -- Regles de dependances generees par "make depend"
-#####################################################
-# DO NOT DELETE THIS LINE
+# DEPENDANCES
+main.o: main.cpp read.h robot.h particle.h model.h graphic.h constantes.h \
+  tolerance.h
+robot.o: robot.c utilitaire.h tolerance.h robot.h constantes.h
+error.o: error.c error.h constantes.h tolerance.h
+read.o: read.c read.h error.h robot.h particle.h constantes.h tolerance.h \
+  utilitaire.h
+particle.o: particle.c utilitaire.h tolerance.h particle.h constantes.h
+utilitaire.o: utilitaire.c utilitaire.h tolerance.h
+model.o: model.c utilitaire.h tolerance.h error.h constantes.h robot.h \
+  particle.h model.h
+graphic.o: graphic.c utilitaire.h tolerance.h graphic.h constantes.h

@@ -48,12 +48,22 @@ namespace {
 
 int main(int argc, char ** argv) {
 	
-	if (argc > 1) {
-		if(read_file(argv[1])) {
-			robot_print();
-			particle_print();
-			initial_collisions();
+	if(argc > 2) {
+		if(!strcmp(argv[1],"Error")) {
+			if(read_file(argv[2]))
+				initial_collisions();
+			robot_delete_all();
+			particle_delete_all();
+		} else if(!strcmp(argv[1],"Draw")) {
+			if(read_file(argv[2]))
+				initial_collisions();
+		} else {
+				printf("Usage: [Error|Draw] <Filename>\n");
+				return EXIT_FAILURE;
 		}
+	} else if(argc > 1){
+		printf("Usage: [Error|Draw] <Filename>\n");
+		return EXIT_FAILURE;
 	}
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
@@ -119,12 +129,14 @@ static void open(void) {
 	robot_delete_all();
 	particle_delete_all();
 	read_file((char *) fn);
+	initial_collisions();
 	glutPostRedisplay();
 }
 
 static void save(void) {
 	const char * fn = s_filename.c_str();
 	printf("Save: %s\n", fn);
+	read_save((char *) fn);
 }
 
 static void start(void) {
