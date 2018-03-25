@@ -21,7 +21,7 @@ void graphic_affichage(void) {
 	graphic_border();
 	
 	int nb_robot = robot_get_nb();
-	robot_get_init_i(NULL);
+	robot_get_init_i(nb_robot-1);
 	double x, y, a, r;
 	for(int i = 0; i < nb_robot; i++) {
 		robot_get(&x, &y, &a, NULL, NULL);
@@ -29,7 +29,7 @@ void graphic_affichage(void) {
 	}
 	
 	int nb_particle = particle_get_nb();
-	particle_get_init_i(NULL);
+	particle_get_init_i(nb_particle-1);
 	for(int i = 0; i < nb_particle; i++) {
 		particle_get(NULL, &r, &x, &y, NULL, NULL);
 		graphic_particle(r, x, y);

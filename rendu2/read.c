@@ -109,8 +109,8 @@ void read_save(char * filename) {
 	int nb_robot, nb_particle;
 	nb_robot = robot_get_nb();
 	nb_particle = particle_get_nb();
-	robot_get_init_i(NULL);
-	particle_get_init_i(NULL);
+	robot_get_init_i(nb_robot-1);
+	particle_get_init_i(nb_particle-1);
 	printf("%d %d\n", nb_robot, nb_particle);
 	fprintf(write, "# \"%s\" computer generated save file\n\n", filename);
 	fprintf(write, "%d\n", nb_robot);
