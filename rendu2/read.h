@@ -2,6 +2,7 @@
 #define READ_H
 
 int read_file(char * filename);
+void read_save(char * filename);
 static int read_robot(	char * line);
 static int read_particle(	char * line);
 static void remove_comments(char * line);
