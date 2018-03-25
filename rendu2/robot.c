@@ -140,7 +140,7 @@ void robot_set_nb(int nb) {
 }
 
 int robot_get_nb(void) {
-	return nb_robot;
+	return robot_count;
 }
 
 void robot_get(double * x, double * y, double * angle, unsigned int * i_id, unsigned int * u_id) {

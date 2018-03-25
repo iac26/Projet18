@@ -117,7 +117,7 @@ void particle_set_nb(int nb) {
 }
 
 int particle_get_nb(void) {
-	return nb_particle;
+	return particle_count;
 } 
 
 void particle_get_init_i(unsigned int id) {
