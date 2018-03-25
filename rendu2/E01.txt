@@ -1,26 +1,13 @@
-# simple correct file / may have additional spaces
+# "E01.txt" computer generated save file
 
-# number of robots
-3		
-	 # robot 1
-	 0  0 0			
-	 # robot 2
-	 1  1 0	
-	 # robot 3
-	-1 -1 0	
-
-
-
-
-
-
-
+3
+	 -1.00000 -1.00000 0.00000
+	 1.00000 1.00000 0.00000
+	 0.00000 0.00000 0.00000
 FIN_LISTE
 
-# number of particules
-2		
-    # particule 1		
-	1 2 -2  2	
-	# particule 2
-	1 2  2 -2		
+2
+	 1.00000 2.00000 2.00000 -2.00000
+	 1.00000 2.00000 -2.00000 2.00000
 FIN_LISTE
+
