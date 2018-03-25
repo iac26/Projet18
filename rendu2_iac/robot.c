@@ -72,13 +72,18 @@ int robot_delete_i(unsigned int id) {
 
 void robot_delete_all(void) {
 	ROBOT * r = head;
+	head = NULL;
+	robot_count = 0;
+	robot_count_u = 0;
+	nb_robot = 0;
 	ROBOT * tmp;
-	while(r->next) {
+	while(r) {
 		tmp = r->next;
 		free(r);
 		r = tmp;
 	}
-	free(r);
+	if(r)
+		free(r);
 }
 
 int robot_delete_u(unsigned int id) {

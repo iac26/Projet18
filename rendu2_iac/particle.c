@@ -99,12 +99,17 @@ int particle_delete_u(unsigned int id) {
 void particle_delete_all(void) {
 	PARTICLE * p = head;
 	PARTICLE * tmp;
-	while(p->next) {
+	head = NULL;
+	particle_count = 0;
+	particle_count_u = 0;
+	nb_particle = 0;
+	while(p) {
 		tmp = p->next;
 		free(p);
 		p = tmp;
 	}
-	free(p);
+	if(p)
+		free(p);
 }
 
 void particle_set_nb(int nb) {
