@@ -14,12 +14,23 @@
 
 static double ratio;
 
+int graphic_init_glut(int * argc, char ** argv) {
+	glutInit(argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+	glutInitWindowPosition(200,200);
+	glutInitWindowSize(WIDTH,HEIGHT);
+	int g_window = glutCreateWindow("ROBOTS");
+	glViewport(0, 0, WIDTH, HEIGHT);
+	glOrtho(-DMAX, DMAX, -DMAX, DMAX, -1, 1);
+	glutDisplayFunc(graphic_affichage);
+	glClearColor(1.0, 1.0, 1.0, 0.0);
+	return g_window;
+}
+
 void graphic_affichage(void) {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
-	
 	graphic_border();
-	
 	int nb_robot = robot_get_nb();
 	robot_get_init_i(nb_robot-1);
 	double x, y, a, r;
@@ -27,14 +38,12 @@ void graphic_affichage(void) {
 		robot_get(&x, &y, &a, NULL, NULL);
 		graphic_robot(x, y, a);
 	}
-	
 	int nb_particle = particle_get_nb();
 	particle_get_init_i(nb_particle-1);
 	for(int i = 0; i < nb_particle; i++) {
 		particle_get(NULL, &r, &x, &y, NULL, NULL);
 		graphic_particle(r, x, y);
-	}
-	
+	}	
 	glutSwapBuffers();
 }
 
