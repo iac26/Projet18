@@ -1,4 +1,4 @@
-# "S01.txt" computer generated save file
+# "save.txt" computer generated save file
 
 4
 	 0.00000 -1.00000 -1.70000

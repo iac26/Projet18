@@ -10,6 +10,11 @@
 #endif
 #include <GL/glui.h>
 
+#define GLUI_POSX 900
+#define GLUI_POSY 200
+
+
+
 extern "C" {
 	#include "read.h"
 	#include "robot.h"
@@ -17,18 +22,22 @@ extern "C" {
 	#include "model.h"
 	#include "graphic.h"
 	#include "constantes.h"
+	#include "error.h"
 }
 
-
+enum{OPEN, SAVE, START, STEP, REC, CTRL, QUIT};
 
 static void quit(void);
 static void open(void);
 static void save(void);
 static void start(void);
 static void step(void);
-static void control(void);
+static void rec(void);
+static void ctrl(void);
+static void control(unsigned short type);
 static void idle(void);
 static void GUI(void);
+static int check_file(char * filename);
 
 namespace {
 	std::string o_filename;
@@ -41,24 +50,23 @@ namespace {
 	int record = 0;
 	GLUI_StaticText * rate_text, * step_text, * trans_text, * rot_text;
 	double rate_val = 0.0;
-	int step_val = 0;
+	unsigned int step_val = 0;
 	int ctrl_mode = 0;
 }
 
 
-int main(int argc, char ** argv) {
-	if(argc > 2) {
-		if(!strcmp(argv[1],"Error")) {
-			if(read_file(argv[2]))
-				initial_collisions();
-			robot_delete_all();
-			particle_delete_all();
-		} else if(!strcmp(argv[1],"Draw")) {
-			if(read_file(argv[2]))
-				initial_collisions();
+int main(int argc, char ** argv){
+	if(argc > 2){
+		if(!strcmp(argv[1],"Error")){
+			if(check_file(argv[2])) {
+				error_no_error_in_this_file();
+			}
+			exit(0);
+		} else if(!strcmp(argv[1],"Draw")){
+			check_file(argv[2]);
 		} else {
-				printf("Usage: [Error|Draw] <Filename>\n");
-				return EXIT_FAILURE;
+			printf("Usage: [Error|Draw] <Filename>\n");
+			return EXIT_FAILURE;
 		}
 	} else if(argc > 1){
 		printf("Usage: [Error|Draw] <Filename>\n");
@@ -70,76 +78,133 @@ int main(int argc, char ** argv) {
 	return EXIT_SUCCESS;
 }
 
-static void GUI(void) {
+static void GUI(void){
 	GLUI_Master.set_glutReshapeFunc(graphic_reshape);  
 	GLUI_Master.set_glutIdleFunc(idle);
-	glui = GLUI_Master.create_glui("CONTROL", 0, 900, 200);
+	
+	glui = GLUI_Master.create_glui("CONTROL", 0, GLUI_POSX, GLUI_POSY);
+	
 	GLUI_Panel * open_panel = new GLUI_Panel(glui, "Open");
 	new GLUI_EditText(open_panel, "File Name:", o_filename);
-	new GLUI_Button(open_panel, "OPEN", 0, (GLUI_Update_CB)open);
+	new GLUI_Button(open_panel, "OPEN", OPEN, (GLUI_Update_CB)control);
 	GLUI_Panel * save_panel = new GLUI_Panel(glui, "Save");
 	new GLUI_EditText(save_panel, "File Name:", s_filename);
-	new GLUI_Button(save_panel, "SAVE", 0, (GLUI_Update_CB)save);
+	new GLUI_Button(save_panel, "SAVE", SAVE, (GLUI_Update_CB)control);
 	new GLUI_Column(glui, false);
+	
 	GLUI_Panel * sim_panel = new GLUI_Panel(glui, "Simulation");
-	start_btn = new GLUI_Button(sim_panel, "START", 0, (GLUI_Update_CB)start);
-	new GLUI_Button(sim_panel, "STEP", 0, (GLUI_Update_CB)step);
+	start_btn = new GLUI_Button(sim_panel, "START", START, (GLUI_Update_CB)control);
+	new GLUI_Button(sim_panel, "STEP", STEP, (GLUI_Update_CB)control);
 	GLUI_Panel * rec_panel = new GLUI_Panel(glui, "Record");
-	new GLUI_Checkbox(rec_panel, "Record", &record);
+	new GLUI_Checkbox(rec_panel, "Record", &record, REC, (GLUI_Update_CB)control);
 	rate_text = new GLUI_StaticText(rec_panel, "Rate: 0.000");
 	step_text = new GLUI_StaticText(rec_panel, "Step: 0");
 	new GLUI_Column(glui, false);
+	
 	GLUI_Panel * control_panel = new GLUI_Panel(glui, "Control Mode");
-	GLUI_RadioGroup * ctrl_r = new GLUI_RadioGroup(control_panel, &ctrl_mode, 0, (GLUI_Update_CB)control);
+	GLUI_RadioGroup * ctrl_r = new GLUI_RadioGroup(	control_panel, &ctrl_mode, CTRL, 
+													(GLUI_Update_CB)control);
 	new GLUI_RadioButton(ctrl_r, "Automatic");
 	new GLUI_RadioButton(ctrl_r, "Manual"); 
 	GLUI_Panel * r_control_panel = new GLUI_Panel(glui, "Robot Control");
 	trans_text = new GLUI_StaticText(r_control_panel, "Translation: 0.000");
 	rot_text = new GLUI_StaticText(r_control_panel, "Rotation:     0.000");
-	new GLUI_Button(glui, "EXIT", 0, (GLUI_Update_CB)quit);
+	new GLUI_Button(glui, "EXIT", QUIT, (GLUI_Update_CB)control);
+	
 	glui->set_main_gfx_window(g_window);
 }
 
-static void open(void) {
+static void open(void){
 	const char * fn = o_filename.c_str();
 	printf("Open: %s\n", fn);
 	robot_delete_all();
 	particle_delete_all();
-	read_file((char *) fn);
-	initial_collisions();
+	check_file((char *) fn);
+	//~ robot_print();
+	//~ particle_print();
 	glutPostRedisplay();
 }
 
-static void save(void) {
+static int check_file(char * filename){
+	if(!(read_file(filename) && initial_collisions())){
+		robot_delete_all();
+		particle_delete_all();
+		return 0;
+	}
+	return 1;
+}
+
+static void save(void){
 	const char * fn = s_filename.c_str();
 	printf("Save: %s\n", fn);
 	read_save((char *) fn);
 }
 
-static void start(void) {
+static void start(void){
 	start_stop_v = !start_stop_v;
-	if(start_stop_v) {
+	if(start_stop_v){
+		printf("start\n");
 		start_btn->name = "STOP";
 	} else {
+		printf("stop\n");
 		start_btn->name = "START";
 	}
 }
 
-static void step(void) {
+static void step(void){
 	step_val++;
 	printf("step\n");
 }
 
-static void control(void) {
-	printf("ctrl\n");
+static void rec(void){
+	if(record) {
+		printf("recording started\n");
+	} else {
+		printf("recording stopped\n");
+	}
 }
 
-static void quit(void) {
+static void ctrl(void){
+	if(ctrl_mode) {
+		printf("control mode set to manual\n");
+	} else {
+		printf("control mode set to automatic\n");
+	}
+}
+
+static void control(unsigned short type){
+	switch (type) {
+		case OPEN:
+			open();
+			break;
+		case SAVE:
+			save();
+			break;
+		case START:
+			start();
+			break;
+		case STEP:
+			step();
+			break;
+		case REC:
+			rec();
+			break;
+		case CTRL:
+			ctrl();
+			break;
+		case QUIT:
+			quit();
+			break;
+	}
+}
+
+static void quit(void){
+	printf("bye\n");
 	glutDestroyWindow(g_window);
 	exit(0);
 }
 
-static void idle(void) { 
+static void idle(void){ 
 	glutSetWindow(g_window);
 	char str[20];
 	sprintf(str, "rate: %1.3lf", rate_val);

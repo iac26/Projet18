@@ -31,7 +31,7 @@ depend :
 
 # DEPENDANCES
 main.o: main.cpp read.h robot.h particle.h model.h graphic.h constantes.h \
-  tolerance.h
+  tolerance.h error.h
 robot.o: robot.c utilitaire.h tolerance.h robot.h constantes.h
 error.o: error.c error.h constantes.h tolerance.h
 read.o: read.c read.h error.h robot.h particle.h constantes.h tolerance.h \
@@ -40,4 +40,5 @@ particle.o: particle.c utilitaire.h tolerance.h particle.h constantes.h
 utilitaire.o: utilitaire.c utilitaire.h tolerance.h
 model.o: model.c utilitaire.h tolerance.h error.h constantes.h robot.h \
   particle.h model.h
-graphic.o: graphic.c utilitaire.h tolerance.h graphic.h constantes.h
+graphic.o: graphic.c utilitaire.h tolerance.h graphic.h constantes.h \
+  robot.h particle.h
