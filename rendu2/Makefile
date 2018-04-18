@@ -11,11 +11,9 @@ all : projet.x
 
 mac : $(OFILES)
 	$(CC) $(OFILES) -o projet.x $(LIB_MAC)
-	@rm -f *.o
 
 projet.x : $(OFILES)
 	$(CC) $(OFILES) -o $@ $(LIB)
-	@rm -f *.o
 	
 clean : 
 	@echo "CLEANING"

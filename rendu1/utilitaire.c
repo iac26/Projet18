@@ -27,7 +27,8 @@ void util_range_angle(double * p_angle) {
 		*p_angle = fmod(*p_angle, 2*M_PI);
 		if(*p_angle > M_PI) {
 			*p_angle -= 2.0*M_PI;
-		} else if(*p_angle <= -M_PI) {
+		} 
+		else if(*p_angle <= -M_PI) {
 			*p_angle += 2.0*M_PI;
 		}
 	}
@@ -112,12 +113,14 @@ bool util_inner_triangle(double la, double lb, double lc, double lb_new, double 
 		if((s1 < la)&&(s1 > 0.0)) {
 			if(p_la_new)
 				*p_la_new = s1;
-		} else {
+		} 
+		else {
 			if(p_la_new)
 				*p_la_new = s2;
 		}
 		return true;
-	} else {
+	} 
+	else {
 		return false;
 	}
 	
