@@ -13,6 +13,8 @@
 
 enum{CHECKING, ERASING};
 enum{NB_ROBOT, READ_ROBOT, END_ROBOT, NB_PARTICLE, END_PARTICLE, READ_PARTICLE, END};
+
+
 static int robot_count;
 static int particle_count;
 static unsigned int line_count = 0;

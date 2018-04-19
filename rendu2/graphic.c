@@ -17,6 +17,7 @@
 #define POSY 200
 #define THICK 1.5
 #define NORMAL 1.0
+#define NEG_QUART_PI 7/4
 
 #define COLOR_LIGHT_BLUE 	0.5f, 0.5f, 1.0f
 #define COLOR_DARK_BLUE 	0.0f, 0.0f, 0.5f
@@ -81,14 +82,14 @@ void graphic_robot(double x, double y, double angle){
 	glRotated(angle, 0.0, 0.0, 1.0);
 	glColor3f(COLOR_LIGHT_BLUE);
 	glBegin(GL_POLYGON);
-	for(double i = M_PI/4; i < M_PI*7/4; i += 2*M_PI/R_RES){
+	for(double i = M_PI/4; i < M_PI*NEG_QUART_PI; i += 2*M_PI/R_RES){
 		glVertex2d(R_ROBOT*cos(i), R_ROBOT*sin(i));
 	}
 	glVertex2d(R_ROBOT, 0.0);
 	glEnd();
 	glColor3f(COLOR_DARK_BLUE);
 	glBegin(GL_LINE_LOOP);
-	for(double i = M_PI/4; i < M_PI*7/4; i += 2*M_PI/R_RES){
+	for(double i = M_PI/4; i < M_PI*NEG_QUART_PI; i += 2*M_PI/R_RES){
 		glVertex2d(R_ROBOT*cos(i), R_ROBOT*sin(i));
 	}
 	glVertex2d(R_ROBOT, 0.0);
