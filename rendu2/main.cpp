@@ -13,6 +13,8 @@
 #define GLUI_POSX 900
 #define GLUI_POSY 200
 
+#define STRLEN 20
+
 
 
 extern "C" {
@@ -27,16 +29,59 @@ extern "C" {
 
 enum{OPEN, SAVE, START, STEP, REC, CTRL, QUIT};
 
+/**
+ * \brief	quite the program
+ **/
 static void quit(void);
+
+/**
+ * \brief	open a file
+ **/
 static void open(void);
+
+/**
+ * \brief	save a file
+ **/
 static void save(void);
+
+/**
+ * \brief	start/stop the simulation
+ **/
 static void start(void);
+
+/**
+ * \brief	increment the simulation one step
+ **/
 static void step(void);
+
+/**
+ * \brief	start/stop recording
+ **/
 static void rec(void);
+
+/**
+ * \brief	handle the control mode selection
+ **/
 static void ctrl(void);
+
+/**
+ * \brief	control callback
+ **/
 static void control(unsigned short type);
+
+/**
+ * \brief	idle function
+ **/
 static void idle(void);
+
+/**
+ * \brief	draw the glui window
+ **/
 static void GUI(void);
+
+/**
+ * \brief	checks if the opened file is correct
+ **/
 static int check_file(char * filename);
 
 namespace {
@@ -206,7 +251,7 @@ static void quit(void){
 
 static void idle(void){ 
 	glutSetWindow(g_window);
-	char str[20];
+	char str[STRLEN];
 	sprintf(str, "rate: %1.3lf", rate_val);
 	rate_text->set_text((const char *)str);
 	sprintf(str, "step: %d", step_val);

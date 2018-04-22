@@ -85,8 +85,6 @@ void robot_delete_all(void){
 		free(r);
 		r = tmp;
 	}
-	//if(r)
-	//	free(r);
 }
 
 int robot_delete_u(unsigned int id){

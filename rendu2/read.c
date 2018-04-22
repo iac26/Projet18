@@ -11,6 +11,11 @@
 #include "utilitaire.h"
 
 
+#define FIN_LISTE_LEN 10
+
+#define ASCII_SPACE 32
+#define ASCII_LAST 127
+
 enum{CHECKING, ERASING};
 enum{NB_ROBOT, READ_ROBOT, END_ROBOT, NB_PARTICLE, END_PARTICLE, READ_PARTICLE, END};
 
@@ -100,7 +105,7 @@ static int read_robot_step(void){
 static int read_end_robot_step(void){
 	if(detect_fin_liste(line)){
 		reader_state = NB_PARTICLE;
-	} else /*if(detect_anything(line))*/{
+	} else {
 		error_missing_fin_liste_robots(line_count);
 		return 0;
 	}
@@ -136,7 +141,7 @@ static int read_particle_step(void){
 static int read_end_particle_step(void){
 	if(detect_fin_liste(line)){
 		reader_state = END;
-	} else /*if(detect_anything(line))*/{
+	} else {
 		error_missing_fin_liste_particules(line_count);
 		return 0;
 	}
@@ -273,7 +278,7 @@ static void remove_comments(char * line){
 }
 
 static int detect_fin_liste(char * line){
-	char str[10];
+	char str[FIN_LISTE_LEN];
 	sscanf(line, "%10s", str);
 	if(!strcmp(str, "FIN_LISTE")){
 		return 1;
@@ -284,7 +289,7 @@ static int detect_fin_liste(char * line){
 
 static int detect_anything(char * line){
 	for(int i = 0; i < MAX_LINE; i++){
-		if((line[i] > 32)&&(line[i] <= 127)){
+		if((line[i] > ASCII_SPACE)&&(line[i] <= ASCII_LAST)){
 			return 1;
 		}
 	}
