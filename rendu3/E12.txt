@@ -1,0 +1,13 @@
+# multiple entities per line : invalid particule position
+
+# number of robots
+3		
+	 # robot 1 to 3
+	 0  0 0		 1  1 0		-1 -1 1.5			
+FIN_LISTE
+
+# number of particules
+2		
+    # particule 1 to 2	
+	1 2 3 4    	0.5 0.6 22 28		
+FIN_LISTE
