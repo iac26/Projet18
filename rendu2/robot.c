@@ -9,7 +9,6 @@ static ROBOT * head = NULL;
 static ROBOT * last = NULL;
 static unsigned int robot_count = 0;
 static unsigned int robot_count_u = 0;
-static int nb_robot = 0;
 
 struct robot{
 	C2D body;
@@ -19,9 +18,9 @@ struct robot{
 	ROBOT * next;
 };
  
-unsigned int robot_create(double x, double y, double a) {
+unsigned int robot_create(double x, double y, double a){
 	ROBOT * r = malloc(sizeof(ROBOT));
-	if(r) {
+	if(r){
 		robot_count_u++;
 		r->body.centre.x = x;
 		r->body.centre.y = y;
@@ -36,17 +35,17 @@ unsigned int robot_create(double x, double y, double a) {
 	return robot_count_u;
 }
 
-void robot_print(void) {
+void robot_print(void){
 	ROBOT * p = head;
 	printf("ROBOTS\n");
-	while(p) {
+	while(p){
 		printf("robot: %u, %u, %lf %lf %lf\n", p->i_id, p->u_id, p->body.centre.x, p->body.centre.y, p->angle);
 		p = p->next;
 	}
 }
 
-int robot_delete_i(unsigned int id) {
-	if(head->i_id == id) {
+int robot_delete_i(unsigned int id){
+	if(head->i_id == id){
 		ROBOT * tmp = head->next;
 		free(head);
 		head = tmp;
@@ -56,8 +55,8 @@ int robot_delete_i(unsigned int id) {
 	head->i_id -= 1;
 	ROBOT * p = head->next;
 	ROBOT * prev = head;
-	while(p) {
-		if(p->i_id == id) {
+	while(p){
+		if(p->i_id == id){
 			prev->next = p->next;
 			free(p);
 			robot_count--;
@@ -67,27 +66,29 @@ int robot_delete_i(unsigned int id) {
 		prev = p;
 		p = prev->next;
 	}
+	p = head;
+	while(p){
+		p->i_id += 1;
+		p = p->next;
+	}
 	return 0;
 }
 
-void robot_delete_all(void) {
+void robot_delete_all(void){
 	ROBOT * r = head;
 	head = NULL;
 	robot_count = 0;
 	robot_count_u = 0;
-	nb_robot = 0;
-	ROBOT * tmp;
-	while(r) {
+	ROBOT * tmp = NULL;
+	while(r){
 		tmp = r->next;
 		free(r);
 		r = tmp;
 	}
-	if(r)
-		free(r);
 }
 
-int robot_delete_u(unsigned int id) {
-	if(head->u_id == id) {
+int robot_delete_u(unsigned int id){
+	if(head->u_id == id){
 		ROBOT * tmp = head->next;
 		free(head);
 		head = tmp;
@@ -97,8 +98,8 @@ int robot_delete_u(unsigned int id) {
 	head->i_id -= 1;
 	ROBOT * p = head->next;
 	ROBOT * prev = head;
-	while(p) {
-		if(p->u_id == id) {
+	while(p){
+		if(p->u_id == id){
 			prev->next = p->next;
 			free(p);
 			robot_count--;
@@ -108,14 +109,19 @@ int robot_delete_u(unsigned int id) {
 		prev = p;
 		p = prev->next;
 	}
+	p = head;
+	while(p){
+		p->i_id += 1;
+		p = p->next;
+	}
 	return 0;
 }
 
-void robot_get_init_i(unsigned int id) {
+void robot_get_init_i(unsigned int id){
 	ROBOT * p = head;
 	last = head;
 	while(p){
-		if(p->i_id == id) {
+		if(p->i_id == id){
 			last = p;
 			break;
 		}
@@ -123,11 +129,11 @@ void robot_get_init_i(unsigned int id) {
 	}
 }
 
-void robot_get_init_u(unsigned int id) {
+void robot_get_init_u(unsigned int id){
 	ROBOT * p = head;
 	last = head;
 	while(p){
-		if(p->u_id == id) {
+		if(p->u_id == id){
 			last = p;
 			break;
 		}
@@ -135,15 +141,11 @@ void robot_get_init_u(unsigned int id) {
 	}
 }
 
-void robot_set_nb(int nb) {
-	nb_robot = nb;
-}
-
-int robot_get_nb(void) {
+int robot_get_nb(void){
 	return robot_count;
 }
 
-void robot_get(double * x, double * y, double * angle, unsigned int * i_id, unsigned int * u_id) {
+void robot_get(double * x, double * y, double * angle, unsigned int * i_id, unsigned int * u_id){
 	if(x)
 		*x = last->body.centre.x;
 	if(y)
@@ -155,7 +157,7 @@ void robot_get(double * x, double * y, double * angle, unsigned int * i_id, unsi
 	if(u_id)
 		*u_id = last->u_id;
 	if(last)
-		last = last->next; 
+		last = last->next;
 }
 
 

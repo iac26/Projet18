@@ -9,7 +9,6 @@ static PARTICLE * head = NULL;
 static PARTICLE * last = NULL;
 static unsigned int particle_count = 0;
 static unsigned int particle_count_u = 0;
-static int nb_particle = 0;
 
 struct particle{
 	C2D body;
@@ -19,9 +18,9 @@ struct particle{
 	PARTICLE * next;
 };
  
-unsigned int particle_create(double e, double r, double x, double y) {
+unsigned int particle_create(double e, double r, double x, double y){
 	PARTICLE * p = malloc(sizeof(PARTICLE));
-	if(p) {
+	if(p){
 		particle_count_u++;
 		p->body.centre.x = x;
 		p->body.centre.y = y;
@@ -36,18 +35,18 @@ unsigned int particle_create(double e, double r, double x, double y) {
 	return particle_count_u;
 }
 
-void particle_print(void) {
+void particle_print(void){
 	PARTICLE * p = head;
 	printf("PARTICLES\n");
-	while(p) {
+	while(p){
 		printf("particule: %u, %u, %lf %lf %lf %lf\n", p->i_id, p->u_id, p->energy, p->body.rayon, p->body.centre.x, p->body.centre.y);
 		PARTICLE * tmp = p;
 		p = tmp->next;
 	}
 }
 
-int particle_delete_i(unsigned int id) {
-	if(head->i_id == id) {
+int particle_delete_i(unsigned int id){
+	if(head->i_id == id){
 		PARTICLE * tmp = head->next;
 		free(head);
 		head = tmp;
@@ -57,8 +56,8 @@ int particle_delete_i(unsigned int id) {
 	head->i_id -= 1;
 	PARTICLE * p = head->next;
 	PARTICLE * prev = head;
-	while(p) {
-		if(p->i_id == id) {
+	while(p){
+		if(p->i_id == id){
 			prev->next = p->next;
 			free(p);
 			particle_count--;
@@ -71,8 +70,8 @@ int particle_delete_i(unsigned int id) {
 	return 0;
 }
 
-int particle_delete_u(unsigned int id) {
-	if(head->u_id == id) {
+int particle_delete_u(unsigned int id){
+	if(head->u_id == id){
 		PARTICLE * tmp = head->next;
 		free(head);
 		head = tmp;
@@ -82,8 +81,8 @@ int particle_delete_u(unsigned int id) {
 	head->i_id -= 1;
 	PARTICLE * p = head->next;
 	PARTICLE * prev = head;
-	while(p) {
-		if(p->u_id == id) {
+	while(p){
+		if(p->u_id == id){
 			prev->next = p->next;
 			free(p);
 			particle_count--;
@@ -96,14 +95,13 @@ int particle_delete_u(unsigned int id) {
 	return 0;
 }
 
-void particle_delete_all(void) {
+void particle_delete_all(void){
 	PARTICLE * p = head;
 	PARTICLE * tmp;
 	head = NULL;
 	particle_count = 0;
 	particle_count_u = 0;
-	nb_particle = 0;
-	while(p) {
+	while(p){
 		tmp = p->next;
 		free(p);
 		p = tmp;
@@ -112,19 +110,15 @@ void particle_delete_all(void) {
 		free(p);
 }
 
-void particle_set_nb(int nb) {
-	nb_particle = nb;
-}
-
-int particle_get_nb(void) {
+int particle_get_nb(void){
 	return particle_count;
 } 
 
-void particle_get_init_i(unsigned int id) {
+void particle_get_init_i(unsigned int id){
 	PARTICLE * p = head;
 	last = head;
 	while(p){
-		if(p->i_id == id) {
+		if(p->i_id == id){
 			last = p;
 			break;
 		}
@@ -132,11 +126,11 @@ void particle_get_init_i(unsigned int id) {
 	}
 }
 
-void particle_get_init_u(unsigned int id) {
+void particle_get_init_u(unsigned int id){
 	PARTICLE * p = head;
 	last = head;
 	while(p){
-		if(p->u_id == id) {
+		if(p->u_id == id){
 			last = p;
 			break;
 		}
@@ -144,7 +138,7 @@ void particle_get_init_u(unsigned int id) {
 	}
 }
 
-void particle_get(double * e, double * rad, double * x, double * y, unsigned int * i_id, unsigned int * u_id) {
+void particle_get(double * e, double * rad, double * x, double * y, unsigned int * i_id, unsigned int * u_id){
 	if(x)
 		*x = last->body.centre.x;
 	if(y)
