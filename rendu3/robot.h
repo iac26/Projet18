@@ -49,13 +49,13 @@ void robot_get_init_u(unsigned int id);
 /**
  * \brief	returns one robot, the first one selected by robot_get_init*
  * 			the next ones sequentially
- * \param	x		pointer to store the x position of the robot
- * \param	y		pointer to store the y position of the robot
+ * \param	pos		pointer to store the position of the robot
+ * \param	target	pointer to store the position of the target
  * \param	angle	pointer to store the orientation of the robot
  * \param	i_id	pointer to store the iter ID of the robot
  * \param	u_id	pointer to store the uniq ID of the robot
  */
-void robot_get(	double * x, double * y, double * angle, unsigned int * i_id, 
+void robot_get(	S2D * centre,S2D * target, double * angle, unsigned int * i_id, 
 				unsigned int * u_id);
 
 /**
@@ -75,6 +75,8 @@ void robot_block_increment(void);
  * \brief	returns the number of robots
  */
 int robot_get_nb(void);
+void robot_set_target(S2D target, double alpha);
+void robot_get_init_head(void);
 
 
 #endif

@@ -167,20 +167,55 @@ void robot_pop_last(void) {
 	last = tmp_last;
 }
 
-void robot_get(	double * x, double * y, double * angle, unsigned int * i_id, 
+void robot_get(	S2D * pos, S2D * target, double * angle, unsigned int * i_id, 
 				unsigned int * u_id){
-	if(x)
-		*x = last->body.centre.x;
-	if(y)
-		*y = last->body.centre.y;
-	if(angle)
-		*angle = last->angle;
-	if(i_id)
-		*i_id = last->i_id;
-	if(u_id)
-		*u_id = last->u_id;
-	if(last && increment)
-		last = last->next;
+	if(last){
+		if(pos)
+			*pos = last->body.centre;
+		if(target)
+			*target = last->target;
+		if(angle)
+			*angle = last->angle;
+		if(i_id)
+			*i_id = last->i_id;
+		if(u_id)
+			*u_id = last->u_id;
+		if(increment)
+			last = last->next;
+		}
 }
 
+void robot_set_target(S2D target){
+	if(last){
+		last->target = target;
+		if(increment)
+				last = last->next;
+	}
+}
+
+void robot_set_angle(double alpha){
+	if(last){
+		last->angle = alpha;
+		if(increment)
+				last = last->next;
+	}
+}
+
+void robot_get_init_head(void){
+	last = head;
+}
+
+void robot_move(double alpha){
+	if(alpha < last->angle){
+		double rot = 0;
+		while(alpha < last->angle && rot <= VROT_MAX){
+			robot_set_angle(last->angle - DELTA_VROT);
+		}
+	else if(alpha > last->angle){
+		double rot = 0;
+		while(alpha > last->angle && rot <= VROT_MAX){
+			robot_set_angle(last->angle + DELTA_VROT);
+		}
+	while(util_ecart_angle(last->body.centre, alpsha, last->target, ))
+}
 
