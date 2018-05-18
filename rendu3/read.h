@@ -1,3 +1,9 @@
+/**
+ * \file 	read.h
+ * \brief 	file reader and writer
+ * \author	Lianyi Ni & Iacopo Sprenger
+ * \version 1.1
+ */
 #ifndef READ_H
 #define READ_H
 
@@ -78,6 +84,11 @@ static int read_particle_step(void);
  * \brief	reader step that looks for "FIN_LISTE"
  */ 
 static int read_end_particle_step(void); 
+
+/**
+ * \brief	calls the error module to signal that no error was found in a file
+ */
+void read_file_ok(void);
 
 
 #endif

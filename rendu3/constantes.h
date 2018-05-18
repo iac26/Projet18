@@ -1,5 +1,6 @@
 #ifndef CONSTANTES_H
 #define CONSTANTES_H
+#define DEBUG
 
 #include "tolerance.h"
 

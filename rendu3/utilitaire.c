@@ -1,9 +1,16 @@
+/**
+ * \file 	utilitaire.c
+ * \brief 	fonctions utilitaires de bas niveau
+ * \author	Lianyi Ni & Iacopo Sprenger
+ * \version 1.1
+ */
 #include "utilitaire.h"
 #include "tolerance.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
+#include <assert.h>
 
 double util_distance(S2D a, S2D b) {
 	double dx, dy, dist;
@@ -56,13 +63,25 @@ bool util_point_dans_cercle(S2D a, C2D c) {
 	return false;
 }
 
-bool util_collision_cercle(C2D a, C2D b, double *p_dist) {
+// bool util_collision_cercle(C2D a, C2D b, double *p_dist) {
+// 	double dist;
+// 	dist = util_distance(a.centre, b.centre);
+// 	if(p_dist) {
+// 		*p_dist = dist;
+// 	}
+// 	if(dist < ((a.rayon + b.rayon) - EPSIL_ZERO)) {
+// 		return true;
+// 	}
+// 	return false;
+// }
+
+bool util_collision_cercle(C2D a, C2D b, double * p_dist) {
 	double dist;
 	dist = util_distance(a.centre, b.centre);
 	if(p_dist) {
 		*p_dist = dist;
 	}
-	if(dist < ((a.rayon + b.rayon) - EPSIL_ZERO)) {
+	if(dist < (a.rayon + b.rayon - EPSIL_ZERO)) {
 		return true;
 	}
 	return false;
@@ -99,29 +118,71 @@ bool util_alignement(S2D a, double alpha, S2D b) {
 	return false;
 }
 
-bool util_inner_triangle(	double la, double lb, double lc, double lb_new, 
-							double *p_la_new) {
-	double a, b, c, delta, s1, s2;
-	if(	(la > EPSIL_ZERO)&&(lb >= 0)&&(lc > EPSIL_ZERO)&&
-		(lb_new >= lb)&&(lb_new <= lc)) {
-		a = 1.0;
-		b = -2.0*lc*(la*la + lc*lc - lb*lb)/(2.0*la*lc);
-		c = lc*lc - lb_new*lb_new;
-		delta = b*b - 4.0*a*c;
-		s1 = (-b + sqrt(delta))/2.0*a;
-		s2 = (-b - sqrt(delta))/2.0*a;
-		if((s1 < la)&&(s1 > 0.0)) {
-			if(p_la_new)
-				*p_la_new = s1;
-		} else {
-			if(p_la_new)
-				*p_la_new = s2;
-		}
-		return true;
-	} else {
-		return false;
-	}
+bool util_inner_triangle(double la, double lb, double lc, double lb_new,
+						 double * p_la_new)
+{
+	assert(p_la_new);
 	
+	if (la > EPSIL_ZERO && lb >= 0. && lc > EPSIL_ZERO && // lb peut être nul
+	    lb_new >= lb    && lb_new <= lc)
+	{
+		double l_cosb = (la*la + lc*lc - lb*lb)/(2*la);   // L*cosb
+
+		// par construction l'angle beta est inférieur à pi/2
+		// donc lcosb doit être positif 
+		assert(l_cosb > 0.);
+		
+		// coef a,b,c de l'equ du second degré: ax² + bx + c = 0
+		//double a = 1.;
+		double b = -2*l_cosb ; 
+		double c = lc*lc - lb_new*lb_new;
+		
+		double delta = b*b -4*c ;
+	
+		if(delta < 0.)			
+			return false;
+			
+		delta = sqrt(delta) / 2;
+	
+		// solutions: 0.5*( -b +/- sqrt(delta)) doivent être positifs
+		// notre solution est la plus petite qui doit être positive
+		if( (l_cosb - delta ) < 0.) // erreur numérique: on renvoie 0.
+		{
+			* p_la_new = 0. ;
+			return false;
+		}
+
+		* p_la_new = l_cosb - delta ;
+	
+		return true;
+	}
+	return false;
 }
+
+//~ bool util_inner_triangle(	double la, double lb, double lc, double lb_new, 
+							//~ double *p_la_new) {
+	//~ double a, b, c, delta, s1, s2;
+	//~ if(	(la > EPSIL_ZERO)&&(lb >= 0)&&(lc > EPSIL_ZERO)&&
+		//~ (lb_new >= lb)&&(lb_new <= lc)) {
+		//~ a = 1.0;
+		//~ b = -2.0*lc*(la*la + lc*lc - lb*lb)/(2.0*la*lc);
+		//~ c = lc*lc - lb_new*lb_new;
+		//~ delta = b*b - 4.0*a*c;
+		//~ s1 = (-b + sqrt(delta))/2.0*a;
+		//~ s2 = (-b - sqrt(delta))/2.0*a;
+		//~ if((s1 < la)&&(s1 > 0.0)) {
+			//~ if(p_la_new)
+				//~ *p_la_new = s1;
+		//~ } else {
+			//~ if(p_la_new)
+				//~ *p_la_new = s2;
+		//~ }
+		//~ return true;
+	//~ } else {
+		//~ return false;
+	//~ }
+	
+//~ }
+
 
 

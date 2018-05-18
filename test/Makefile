@@ -15,10 +15,10 @@ all : test.x
 test.x : $(OFILES)
 	gcc $(CFLAGS) $(OFILES) -o $@ $(LIBS)
 	
-test.o : test.c ../utilitaire.h
+test.o : test.c utilitaire.h
 	gcc $(CFLAGS) -c $< -o $@
 	
-utilitaire.o : ../utilitaire.c ../utilitaire.h ../tolerance.h
+utilitaire.o : utilitaire.c utilitaire.h tolerance.h
 	gcc $(CFLAGS) -c $< -o $@
 	
 

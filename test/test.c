@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "../utilitaire.h"
+#include "utilitaire.h"
 
 #define FLEN 10
 #define P_SPEED 0.0005
@@ -208,7 +208,9 @@ void correct(void) {
 	player.centre.y += dy;
 	double delta_d = sqrt(dx*dx + dy*dy);
 	if(util_collision_cercle(player, dummy, &dist)) {
+
 		util_inner_triangle(delta_d, dist, L, player.rayon+dummy.rayon, &n_delta_d);
+		printf("util_i_t: la=%lf, lb=%lf, lc=%lf, lb_new=%lf\n -> %lf\n", delta_d, dist, L, player.rayon+dummy.rayon, n_delta_d);
 		dx *= (n_delta_d/delta_d);
 		dy *= (n_delta_d/delta_d);
 		player.centre.x = o_x + dx;
