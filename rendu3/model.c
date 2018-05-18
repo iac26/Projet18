@@ -36,9 +36,9 @@ static int robot_collision(	double * p_dist, unsigned int * p_id_a,
 	unsigned int id_a, id_b;
 	for(int i = nb_robot-1; i >= 0; i--){
 		robot_get_init_i(i);
-		robot_get(&(a.centre.x), &(a.centre.y), NULL, NULL, &id_a);
+		robot_get(&a.centre, NULL, NULL, NULL, &id_a);
 		for(int j = i-1; j >= 0; j--){
-			robot_get(&(b.centre.x), &(b.centre.y), NULL, NULL, &id_b);
+			robot_get(&b.centre, NULL, NULL, NULL, &id_b);
 			if(util_collision_cercle(a, b, p_dist)){
 				if(p_id_a)
 					*p_id_a = id_a;
@@ -85,7 +85,7 @@ static int cross_collision(	double * p_dist, unsigned int * p_id_a,
 		particle_get(NULL, &(a.rayon), &(a.centre.x), &(a.centre.y), NULL, &id_a);
 		robot_get_init_i(nb_robot-1);
 		for(int j = 0; j < nb_robot; j++){
-			robot_get(&(b.centre.x), &(b.centre.y), NULL, NULL, &id_b);
+			robot_get(&b.centre, NULL, NULL, NULL, &id_b);
 			if(util_collision_cercle(a, b, p_dist)){
 				if(p_id_a)
 					*p_id_a = id_a;
@@ -98,8 +98,25 @@ static int cross_collision(	double * p_dist, unsigned int * p_id_a,
 	return 0;
 }
 
+static void target(double x, double y){
+	robot_get_init_head();
+	for(int n = robot_get_nb(); n != 0; n-=1 ){
+		S2D a;
+		a.x = x;
+		a.y = y;
+		robot_set_target(a);
+	}
+}
+
 static void update(void) {
-	
+	target(0, 0);
+	for(int n = robot_get_nb; n != 0; n-=1){
+		if(last){
+			double alpha = util_angle(last->body.centre, last->target);
+			robot_move(alpha);
+			}
+		}
+	}
 }
 
 

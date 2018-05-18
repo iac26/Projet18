@@ -40,6 +40,6 @@ static int particle_collision(	double * p_dist, unsigned int * p_id_a,
  */
 static int cross_collision(	double * p_dist, unsigned int * p_id_a, 
 							unsigned int * p_id_b);
-
+static void target(double x, double y);
 static void update(void);
 #endif
