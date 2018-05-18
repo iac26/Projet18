@@ -30,6 +30,7 @@ struct robot{
 	double angle;
 	int selected;
 	int blocked;
+	int has_target;
 	unsigned int u_id;
 	unsigned int i_id;
 	ROBOT * next;
@@ -41,9 +42,11 @@ unsigned int robot_create(double x, double y, double a){
 		robot_count_u++;
 		r->body.centre.x = x;
 		r->body.centre.y = y;
+		r->target = r->body.centre;
 		r->body.rayon = R_ROBOT;
 		r->angle = a;
 		r->selected = 0;
+		r->has_target = 0;
 		r->blocked = 0;
 		r->i_id = robot_count;
 		r->u_id = robot_count_u;
@@ -248,6 +251,7 @@ void robot_move(double dist, double angle) {
 void robot_set_target(S2D target) {
 	if(last) {
 		last->target = target;
+		last->has_target = 1;
 		if(increment)
 			last = last->next;
 	}
@@ -256,6 +260,7 @@ void robot_set_target(S2D target) {
 void robot_set_all_targets(S2D target) {
 	ROBOT * p = head;
 	while(p){
+		p->has_target = 1;
 		p->target = target;
 		p = p->next;
 	}
@@ -264,8 +269,10 @@ void robot_set_all_targets(S2D target) {
 void robot_randomize_targets(void) {
 	ROBOT * p = head;
 	while(p){
-		S2D target = {(double) rand()/RAND_MAX, (double) rand()/RAND_MAX};
+		S2D target = {	(double) rand()/RAND_MAX * DMAX,
+		 				(double) rand()/RAND_MAX * DMAX};
 		p->target = target;
+		p->has_target = 1;
 		p = p->next;
 	}
 }
@@ -280,9 +287,12 @@ void robot_select(void){
 				"ANGLE:		%lf\n"
 				"POS: 		%lf %lf\n"
 				"TARGET:	%lf %lf (%lf)\n"
-				"BLOCKED: %d\n", last->u_id, last->angle,
+				"QUAD:		%lf %lf\n"
+				"BLOCKED: %d\n"
+				"HAS TARG %d\n", last->u_id, last->angle,
 				last->body.centre.x, last->body.centre.y,
-				last->target.x, last->target.y, e_angle, last->blocked);
+				last->target.x, last->target.y, e_angle, last->quad.x,
+				last->quad.y, last->blocked, last->has_target);
 		#endif
 		if(increment) {
 			last = last->next;
@@ -297,6 +307,25 @@ void robot_deselect(void){
 			last = last->next;
 		}
 	}
+}
+
+void robot_unset_target(void) {
+	if(last) {
+		last->target = last->body.centre;
+		last->has_target = 0;
+		if(increment)
+			last = last->next;
+	}
+}
+
+int robot_has_target(void) {
+	if(last) {
+		int has_target = last->has_target;
+		if(increment)
+			last = last->next;
+		return has_target;
+	}
+	return 0;
 }
 
 void robot_deselect_all(void){

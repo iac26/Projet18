@@ -166,7 +166,8 @@ void robot_deselect_all(void);
  */
 int robot_get_nb(void);
 
-unsigned short robot_get_superblocked(void);
+int robot_has_target(void);
+void robot_unset_target(void);
 
 
 #endif

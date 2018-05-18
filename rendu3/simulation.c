@@ -20,7 +20,7 @@
 #define TRAN_STEP DELTA_VTRAN
 #define OPTIMAL_ANGLE M_PI/3.0
 #define BLOCK_TRIGGER 10
-
+#define BLOCK_EXTREME_TRIGGER 100
 static int manual_control;
 
 static double manual_v_rot;
@@ -199,9 +199,6 @@ static int single_collisions(	C2D _this, double angle, double tran, double rot,
 			new_this.centre = util_deplacement(_this.centre, angle, tran);
 			particle_increment();
 		}
-		if(step>2) {
-			printf("DEUX\n");
-		}
 	}	
 	robot_pop_last();
 	robot_move(tran, rot);
@@ -246,7 +243,7 @@ static void move(void) {
 		v_tran = manual_v_tran;
 	}
 	if(single_collisions(	c_robot, c_angle, v_tran*DELTA_T,
-								v_rot*DELTA_T, id)) {
+							v_rot*DELTA_T, id)) {
 		robot_unblock();
 	} 
 }
@@ -270,78 +267,164 @@ void simulation_update(void) {
 	particle_decomposition();
 }
 
-void simulation_select_targets(void) {
+// static void select_in_quads(void) {
+// 	int nb_robot = robot_get_nb();
+// 	int nb_part = particle_get_nb();
+// 	robot_block_increment();
+// 	particle_block_increment();
+// 	robot_get_init_head();
+// 	C2D part;
+// 	S2D rob;
+// 	S2D quad;
+// 	for(int i = 0; i < nb_robot; i++) {
+// 		if(!robot_get_blocked()) {
+// 			int pres = 0;
+// 			robot_get(&rob, &quad, NULL, NULL, NULL, NULL, NULL);
+// 			particle_get_init_head();
+// 			for(int i = 0; i < nb_part; i++) {
+// 				particle_get(NULL, &part, NULL, NULL);
+// 				if(quad.x * part.centre.x >= 0 && quad.y * part.centre.y >= 0) {
+// 					if(!particle_targeted()) {
+// 						particle_target();
+// 						pres = 1;
+// 						break;
+// 					}
+// 				}
+// 				particle_increment();
+// 			}
+// 			if(!pres) {
+// 				particle_get_init_head();
+// 				for(int i = 0; i < nb_part; i++) {
+// 					pres = 0;
+// 					particle_get(NULL, &part, NULL, NULL);
+// 					if(!particle_targeted()) {
+// 						particle_target();
+// 						pres = 1;
+// 						break;
+// 					}
+// 					particle_increment();
+// 				}
+// 			}
+// 			robot_set_target(part.centre);
+// 		}
+// 		robot_increment();
+// 	}
+// }
+
+static void select_in_quads(void) {
 	int nb_robot = robot_get_nb();
 	int nb_part = particle_get_nb();
 	robot_block_increment();
 	particle_block_increment();
 	particle_untarget_all();
 	robot_get_init_head();
-	C2D part;
 	for(int i = 0; i < nb_robot; i++) {
-		S2D rob;
-		S2D quad;
-		int pres = 0;
-		robot_get(&rob, &quad, NULL, NULL, NULL, NULL, NULL);
-		particle_get_init_head();
 		if(!robot_get_blocked()) {
-			if(particle_decomp_finished()){
-				S2D closest;
-				S2D closest_quad;
-				double closest_d = 2*DMAX;
-				double closest_d_quad = 2*DMAX;
-				unsigned int found = 0;
-				for(int i = 0; i < nb_part; i++) {
-					particle_get(NULL, &part, NULL, NULL);
-					double d = util_distance(rob, part.centre);
-					if(d < closest_d_quad) {
-						if(quad.x * part.centre.x >= 0 && quad.y * part.centre.y >= 0) {
-							closest_quad = part.centre;
-							closest_d_quad = d;
-							found = 1;
-						} 
-					}
-					if(d < closest_d) {
-						closest_d = d;
-						closest = part.centre;
-					}
-					particle_increment();
-				}
-				if(found) {
-					robot_set_target(closest_quad);
-				} else {
-					robot_set_target(closest);
-				}
-				
-			} else {
-				for(int i = 0; i < nb_part; i++) {
-					particle_get(NULL, &part, NULL, NULL);
+			robot_unset_target();
+		}
+		robot_increment();
+	}
+	C2D part;
+	S2D rob;
+ 	S2D quad;
+ 	particle_get_init_head();
+ 	for(int i = 0; i < nb_part; i++) {
+ 		particle_get(NULL, &part, NULL, NULL);
+ 		unsigned closest_id_quad;
+ 		unsigned id;
+		double closest_d_quad = 2*DMAX;
+		unsigned int found_quad = 0;
+		robot_get_init_head();
+		for(int i = 0; i < nb_robot; i++) {
+			if(!robot_get_blocked() && !robot_has_target()) {
+				robot_get(&rob, &quad, NULL, NULL, NULL, NULL, &id);
+				double d = util_distance(rob, part.centre);
+				if(d < closest_d_quad) {
 					if(quad.x * part.centre.x >= 0 && quad.y * part.centre.y >= 0) {
-						if(!particle_targeted()) {
-							particle_target();
-							pres = 1;
-							break;
-						}
-					}
-					particle_increment();
+						closest_id_quad = id;
+						closest_d_quad = d;
+						found_quad = 1;
+					} 
 				}
-				if(!pres) {
-					particle_get_init_head();
-					for(int i = 0; i < nb_part; i++) {
-						pres = 0;
-						particle_get(NULL, &part, NULL, NULL);
-						if(!particle_targeted()) {
-							particle_target();
-							pres = 1;
-							break;
-						}
-						particle_increment();
-					}
+			}
+			robot_increment();
+		}
+		if(found_quad) {
+			particle_target();
+			robot_get_init_u(closest_id_quad);
+			robot_set_target(part.centre);
+		}
+		particle_increment();
+ 	}
+ 	robot_get_init_head();
+ 	particle_get_init_head();
+ 	int part_count = 0;
+ 	for(int i = 0; i < nb_robot; i++) {
+ 		if(!robot_get_blocked() && !robot_has_target()) {
+ 			while(particle_targeted()) {
+ 				if(part_count >= nb_part) {
+ 					return;
+ 				}
+ 				particle_increment();
+ 				part_count++;
+ 			}
+ 			particle_get(NULL, &part, NULL, NULL);
+ 			robot_set_target(part.centre);
+ 			particle_target();
+ 		}
+ 	}
+}
+
+static void select_decomp_finished(void) {
+	int nb_robot = robot_get_nb();
+	int nb_part = particle_get_nb();
+	robot_block_increment();
+	particle_block_increment();
+	robot_get_init_head();
+	C2D part;
+	S2D rob;
+	S2D quad;
+	for(int i = 0; i < nb_robot; i++) {
+		if(!robot_get_blocked()) {
+			robot_get(&rob, &quad, NULL, NULL, NULL, NULL, NULL);
+			S2D closest;
+			S2D closest_quad;
+			double closest_d = 2*DMAX;
+			double closest_d_quad = 2*DMAX;
+			unsigned int found = 0;
+			particle_get_init_head();
+			for(int i = 0; i < nb_part; i++) {
+				particle_get(NULL, &part, NULL, NULL);
+				double d = util_distance(rob, part.centre);
+				if(d < closest_d_quad) {
+					if(quad.x * part.centre.x >= 0 && quad.y * part.centre.y >= 0) {
+						closest_quad = part.centre;
+						closest_d_quad = d;
+						found = 1;
+					} 
 				}
-				robot_set_target(part.centre);
+				if(d < closest_d) {
+					closest_d = d;
+					closest = part.centre;
+				}
+				particle_increment();
+			}
+			if(found) {
+				robot_set_target(closest_quad);
+			} else {
+				robot_set_target(closest);
 			}
 		}
 		robot_increment();
+	}
+}
+
+void simulation_select_targets(void) {
+	particle_untarget_all();
+	if(particle_decomp_finished()) {
+		select_decomp_finished();
+	} else {
+		select_in_quads();
 	}
 }
 
@@ -370,6 +453,10 @@ void simulation_handle_blocked(void) {
 					closest = part.centre;
 				}
 				particle_increment();
+			}
+			if(robot_get_blocked() > BLOCK_EXTREME_TRIGGER){
+				robot_randomize_targets();
+				return;
 			}
 			if(robot_get_blocked() > BLOCK_TRIGGER) {
 				robot_set_target(second_closest);
@@ -483,28 +570,28 @@ void simulation_assign_quads(void) {
 		}
 		else if(rob.x >= 0 && rob.y >= 0) {
 			robot_set_quad(1, 1);
-			if(pospos > rob_per_quad) {
+			if(pospos >= rob_per_quad) {
 				fill = 1;
 			}
 			pospos++;
 		}
 		else if(rob.x < 0 && rob.y >= 0) {
 			robot_set_quad(-1, 1);
-			if(negpos > rob_per_quad) {
+			if(negpos >= rob_per_quad) {
 				fill = 1;
 			}
 			negpos++;
 		}
 		else if(rob.x < 0 && rob.y < 0) {
 			robot_set_quad(-1, -1);
-			if(negneg > rob_per_quad) {
+			if(negneg >= rob_per_quad) {
 				fill = 1;
 			}
 			negneg++;
 		}
 		else if(rob.x >= 0 && rob.y < 0) {
 			robot_set_quad(1, -1);
-			if(posneg > rob_per_quad) {
+			if(posneg >= rob_per_quad) {
 				fill = 1;
 			}
 			posneg++;
