@@ -21,6 +21,7 @@
 #define OPTIMAL_ANGLE M_PI/3.0
 #define BLOCK_TRIGGER 10
 #define BLOCK_EXTREME_TRIGGER 100
+#define DEBUG_RAYON 0.2f
 static int manual_control;
 
 static double manual_v_rot;
@@ -263,8 +264,7 @@ void simulation_update(void) {
 }
 
 static void select_in_quads(void) {
-	int nb_robot = robot_get_nb();
-	int nb_part = particle_get_nb();
+	int nb_robot = robot_get_nb(), nb_part = particle_get_nb(), part_count = 0;
 	robot_block_increment();
 	particle_block_increment();
 	particle_untarget_all();
@@ -280,10 +280,8 @@ static void select_in_quads(void) {
  	particle_get_init_head();
  	for(int i = 0; i < nb_part; i++) {
  		particle_get(NULL, &part, NULL, NULL);
- 		unsigned closest_id_quad;
- 		unsigned id;
+ 		unsigned closest_id_quad, id, found_quad = 0;
 		double closest_d_quad = 2*DMAX;
-		unsigned int found_quad = 0;
 		robot_get_init_head();
 		for(int i = 0; i < nb_robot; i++) {
 			if(!robot_get_blocked() && !robot_has_target()) {
@@ -308,7 +306,6 @@ static void select_in_quads(void) {
  	}
  	robot_get_init_head();
  	particle_get_init_head();
- 	int part_count = 0;
  	for(int i = 0; i < nb_robot; i++) {
  		if(!robot_get_blocked() && !robot_has_target()) {
  			while(particle_targeted()) {
@@ -506,13 +503,11 @@ void simulation_init(void) {
 
 void simulation_assign_quads(void) {
 	robot_block_increment();
-	int nb_robot = robot_get_nb();
-	int rob_per_quad = nb_robot / 4;
 	robot_get_init_head();
+	int nb_robot = robot_get_nb(), rob_per_quad = nb_robot / 4, fill = 0;
 	S2D rob;
 	int pospos=0, negpos=0, negneg=0, posneg=0;
 	for(int i = 0; i < nb_robot; i++) {
-		unsigned fill = 0;
 		robot_get(&rob, NULL, NULL, NULL, NULL, NULL, NULL);
 		if(rob_per_quad == 0) {
 			robot_set_quad(0, 0);
@@ -598,7 +593,7 @@ void simulation_print_everything(void) {
 		graphic_robot(pos.x, pos.y, a, sel);
 		#ifdef DEBUG
 		if(sel)
-			graphic_debug(0.2f, targ.x, targ.y, 1, 0, 0);
+			graphic_debug(DEBUG_RAYON, targ.x, targ.y, 1, 0, 0);
 		#endif
 	}
 	graphic_affichage_end();
