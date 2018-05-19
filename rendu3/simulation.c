@@ -151,19 +151,14 @@ static int single_collisions_particle(	C2D _this, C2D new_this, double angle,
 	particle_get(NULL, &part, NULL, &part_uid);
 	if(util_collision_cercle(new_this, part, &dist)) {
 		*collisions = 1;
-		//printf("dist:%lf\n", dist);
 		double L = util_distance(_this.centre, part.centre);
 		double n_tran;
-		//printf("UIT: la = %lf lb = %lf lc = %lf lbnew = %lf\n",*tran, dist, L, R_ROBOT+part.rayon);
 		if(util_inner_triangle(*tran, dist, L, R_ROBOT+part.rayon, &n_tran)) {
 			*tran = n_tran;
-			//printf("n_tran: %lf\n", n_tran);
 		} else {
-			//printf("UIT faux la = %lf lb = %lf lc = %lf lbnew = %lf\n",*tran, dist, L, R_ROBOT+part.rayon);
 			*tran = 0;
 		}
 		new_this.centre = util_deplacement(_this.centre, angle, *tran);
-		//printf("new dist: %lf\n", dist);
 		if(util_alignement(new_this.centre, angle, part.centre)) {
 			*eaten = part_uid;
 		}
@@ -245,7 +240,7 @@ static void move(void) {
 	if(single_collisions(	c_robot, c_angle, v_tran*DELTA_T,
 							v_rot*DELTA_T, id)) {
 		robot_unblock();
-	} 
+	}
 }
 
 void simulation_update(void) {
@@ -267,50 +262,6 @@ void simulation_update(void) {
 	particle_decomposition();
 }
 
-// static void select_in_quads(void) {
-// 	int nb_robot = robot_get_nb();
-// 	int nb_part = particle_get_nb();
-// 	robot_block_increment();
-// 	particle_block_increment();
-// 	robot_get_init_head();
-// 	C2D part;
-// 	S2D rob;
-// 	S2D quad;
-// 	for(int i = 0; i < nb_robot; i++) {
-// 		if(!robot_get_blocked()) {
-// 			int pres = 0;
-// 			robot_get(&rob, &quad, NULL, NULL, NULL, NULL, NULL);
-// 			particle_get_init_head();
-// 			for(int i = 0; i < nb_part; i++) {
-// 				particle_get(NULL, &part, NULL, NULL);
-// 				if(quad.x * part.centre.x >= 0 && quad.y * part.centre.y >= 0) {
-// 					if(!particle_targeted()) {
-// 						particle_target();
-// 						pres = 1;
-// 						break;
-// 					}
-// 				}
-// 				particle_increment();
-// 			}
-// 			if(!pres) {
-// 				particle_get_init_head();
-// 				for(int i = 0; i < nb_part; i++) {
-// 					pres = 0;
-// 					particle_get(NULL, &part, NULL, NULL);
-// 					if(!particle_targeted()) {
-// 						particle_target();
-// 						pres = 1;
-// 						break;
-// 					}
-// 					particle_increment();
-// 				}
-// 			}
-// 			robot_set_target(part.centre);
-// 		}
-// 		robot_increment();
-// 	}
-// }
-
 static void select_in_quads(void) {
 	int nb_robot = robot_get_nb();
 	int nb_part = particle_get_nb();
@@ -325,8 +276,7 @@ static void select_in_quads(void) {
 		robot_increment();
 	}
 	C2D part;
-	S2D rob;
- 	S2D quad;
+	S2D rob, quad;
  	particle_get_init_head();
  	for(int i = 0; i < nb_part; i++) {
  		particle_get(NULL, &part, NULL, NULL);
@@ -362,9 +312,8 @@ static void select_in_quads(void) {
  	for(int i = 0; i < nb_robot; i++) {
  		if(!robot_get_blocked() && !robot_has_target()) {
  			while(particle_targeted()) {
- 				if(part_count >= nb_part) {
+ 				if(part_count >= nb_part)
  					return;
- 				}
  				particle_increment();
  				part_count++;
  			}
@@ -647,8 +596,10 @@ void simulation_print_everything(void) {
 	for(int i = 0; i < nb_robot; i++){
 		robot_get(&pos, NULL, &targ, &a, &sel, NULL, NULL);
 		graphic_robot(pos.x, pos.y, a, sel);
+		#ifdef DEBUG
 		if(sel)
-		graphic_debug(0.2f, targ.x, targ.y, 1, 0, 0);
+			graphic_debug(0.2f, targ.x, targ.y, 1, 0, 0);
+		#endif
 	}
 	graphic_affichage_end();
 }

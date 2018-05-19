@@ -236,7 +236,8 @@ void robot_move(double dist, double angle) {
 		if(	fabs(last->prev_pos.x - last->body.centre.x) < EPSIL_ZERO &&
 			fabs(last->prev_pos.y - last->body.centre.y) < EPSIL_ZERO &&
 			!(	last->target.x == last->body.centre.x &&
-				last->target.y == last->body.centre.y)) {
+				last->target.y == last->body.centre.y) &&
+			!last->selected) {
 			if(	fabs(angle) < EPSIL_ZERO) {
 				last->blocked++;
 			}

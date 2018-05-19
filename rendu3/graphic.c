@@ -183,7 +183,11 @@ void graphic_debug(double ra, double x, double y, float r, float g, float b){
 void graphic_border(void){
 	glLoadIdentity();
 	glLineWidth(1);
-	glColor3f(COLOR_GRAY);
+	if(p) {
+		glColor3f(COLOR_LIGHT_BLUE);
+	} else {
+		glColor3f(COLOR_GRAY);
+	}
 	glBegin(GL_LINE_LOOP);
 	glVertex2d(DMAX, DMAX);
 	glVertex2d(DMAX, -DMAX);
