@@ -1,9 +1,3 @@
-/**
- * \file 	error.c
- * \brief 	error handling
- * \author	unknown
- * \version 1.0
- */
 #include <stdio.h>
 #include <math.h>
 

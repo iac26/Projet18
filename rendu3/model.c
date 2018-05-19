@@ -98,9 +98,9 @@ static int cross_collision(	double * p_dist, unsigned int * p_id_a,
 	return 0;
 }
 
-static void target(double x, double y){
+static void target_all(double x, double y){
 	robot_get_init_head();
-	for(int n = robot_get_nb(); n != 0; n-=1 ){
+	for(int n = robot_get_nb(); n != 0; n -= 1 ){
 		S2D a;
 		a.x = x;
 		a.y = y;
@@ -108,16 +108,19 @@ static void target(double x, double y){
 	}
 }
 
-static void update(void) {
-	target(0, 0);
-	for(int n = robot_get_nb; n != 0; n-=1){
-		if(last){
-			double alpha = util_angle(last->body.centre, last->target);
-			robot_move(alpha);
-			}
-		}
+void update(void) {
+	target_all(5, 6);
+	robot_block_increment();
+	robot_get_init_head();
+	for(int n = robot_get_nb(); n != 0; n -= 1){
+		double alpha = calculate_angle();
+		robot_move(alpha);
+		printf("move done %d\n", n);
+		robot_print();
+		particle_print();
 	}
 }
+
 
 
 

@@ -1,9 +1,3 @@
-/**
- * \file 	error.h
- * \brief 	error handling
- * \author	unknown
- * \version 1.0
- */
 #ifndef ERROR_H
 #define ERROR_H
 

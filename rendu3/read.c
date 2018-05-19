@@ -1,9 +1,3 @@
-/**
- * \file 	read.c
- * \brief 	file reader and writer
- * \author	Lianyi Ni & Iacopo Sprenger
- * \version 1.1
- */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -79,10 +73,6 @@ int read_file(char * filename){
 		error_file_missing(filename);
 		return 0;
 	}
-	#ifdef DEBUG
-	robot_print();
-	particle_print();
-	#endif
 	return 1;
 }
 
@@ -105,7 +95,7 @@ static int read_robot_step(void){
 		error_fin_liste_robots(line_count);
 		return 0;
 	}
-	if(!read_robot(line))	
+	if(!read_robot(line))
 		return 0;
 	if(robot_count == nb_robot)
 		reader_state = END_ROBOT;
@@ -162,7 +152,8 @@ static int read_end_particle_step(void){
 void read_save(char * filename){
 	FILE * file = fopen(filename,"w");
 	if(file) {
-		double angle, e;
+		S2D r, target;
+		double x, y, angle, e, rad;
 		int nb_robot, nb_particle;
 		nb_robot = robot_get_nb();
 		nb_particle = particle_get_nb();
@@ -170,21 +161,19 @@ void read_save(char * filename){
 		particle_get_init_i(nb_particle-1);
 		fprintf(file, "# \"%s\" computer generated save file\n\n", filename);
 		fprintf(file, "%d\n", nb_robot);
-		S2D rob;
-		C2D part;
 		for(int i = 0; i < nb_robot; i++){
-			robot_get(&rob, NULL, NULL, &angle, NULL, NULL, NULL);
-			fprintf(file, "\t %2.5lf %2.5lf %2.5lf\n", rob.x, rob.y, angle);
+			robot_get(&r, &target, &angle, NULL, NULL);
+			fprintf(file, "\t %2.5lf %2.5lf %2.5lf\n", r.x, r.y, angle);
 		}
 		fprintf(file, "FIN_LISTE\n\n");
 		
 		fprintf(file, "%d\n", nb_particle);
 		for(int i = 0; i < nb_particle; i++){
-			particle_get(&e, &part, NULL, NULL);
-			fprintf(file, "\t %2.5lf %2.5lf %2.5lf %2.5lf\n", e, part.rayon, 
-					part.centre.x, part.centre.y);
+			particle_get(&e, &rad, &x, &y, NULL, NULL);
+			fprintf(file, "\t %2.5lf %2.5lf %2.5lf %2.5lf\n", e, rad, x, y);
 		}
 		fprintf(file, "FIN_LISTE\n\n");
+		maj_e();
 		fclose(file);
 	}
 }
@@ -219,12 +208,8 @@ static int read_robot(char * line){
 		}
 		align++;
 		if(align == 3){
-			if(util_alpha_dehors(robot_a)){
+			if(util_point_dehors(a, DMAX)||util_alpha_dehors(robot_a)){
 				error_invalid_robot_angle(robot_a);
-				return 0;
-			}
-			if(util_point_dehors(a, DMAX)) {
-				error_invalid_robot();
 				return 0;
 			}
 			robot_create(a.x, a.y, robot_a);
@@ -297,7 +282,7 @@ static void remove_comments(char * line){
 
 static int detect_fin_liste(char * line){
 	char str[FIN_LISTE_LEN];
-	sscanf(line, "%9s", str);
+	sscanf(line, "%10s", str);
 	if(!strcmp(str, "FIN_LISTE")){
 		return 1;
 	} else {
@@ -319,7 +304,3 @@ static void reset_str(char * line){
 		line[i] = ' ';
 	}
 }
-
-void read_file_ok(void) {
-	error_no_error_in_this_file();
-} 
