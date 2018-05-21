@@ -1,0 +1,21 @@
+# simple correct file for final evaluation
+
+# number of robots
+3				
+	 # robot 1
+	 0  0  1.2		
+	 # robot 2
+	 0  -1  1.5	
+	 # robot 3
+	 0  1  -0.4	
+FIN_LISTE
+
+# number of particules
+3				
+	# particule 1
+	1 0.7 2 0.2
+	# particule 2
+	1 0.65 3 2	
+	# particule 3
+	1 0.6 4 0.2
+FIN_LISTE
